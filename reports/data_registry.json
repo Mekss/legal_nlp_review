@@ -1,0 +1,722 @@
+{
+  "echr": {
+    "rows": 1116,
+    "fields": {
+      "applicability": {
+        "example": "41;55",
+        "non_empty": 60,
+        "coverage_pct": 5.4
+      },
+      "appno": {
+        "example": "9732/10",
+        "non_empty": 1116,
+        "coverage_pct": 100.0
+      },
+      "article": {
+        "example": "8;8-1;8-2",
+        "non_empty": 1114,
+        "coverage_pct": 99.8
+      },
+      "conclusion": {
+        "example": "Inadmissible",
+        "non_empty": 1072,
+        "coverage_pct": 96.1
+      },
+      "decisiondate": {
+        "example": "17/05/2011 00:00:00",
+        "non_empty": 319,
+        "coverage_pct": 28.6
+      },
+      "docname": {
+        "example": "HEIDEMANN v. GERMANY",
+        "non_empty": 1116,
+        "coverage_pct": 100.0
+      },
+      "doctype": {
+        "example": "HEDEC",
+        "non_empty": 1116,
+        "coverage_pct": 100.0
+      },
+      "doctypebranch": {
+        "example": "ADMISSIBILITY",
+        "non_empty": 1116,
+        "coverage_pct": 100.0
+      },
+      "documentcollectionid": {
+        "example": "CASELAW;DECISIONS;ADMISSIBILITY;ENG",
+        "non_empty": 1116,
+        "coverage_pct": 100.0
+      },
+      "ecli": {
+        "example": "ECLI:CE:ECHR:2011:0517DEC000973210",
+        "non_empty": 878,
+        "coverage_pct": 78.7
+      },
+      "externalsources": {
+        "example": "The 1980 Hague Convention on the Civil Aspects of International Child Abduction",
+        "non_empty": 136,
+        "coverage_pct": 12.2
+      },
+      "extractedappno": {
+        "example": "9732/10;46165/99;30943/96;31871/96;25735/94;28945/95",
+        "non_empty": 1116,
+        "coverage_pct": 100.0
+      },
+      "full_text": {
+        "example": "FIFTH SECTIONDECISIONAS TO THE ADMISSIBILITY OFApplication no. 9732/10by Jürgen HEIDEMANNa...",
+        "non_empty": 1116,
+        "coverage_pct": 100.0
+      },
+      "importance": {
+        "example": "4",
+        "non_empty": 1116,
+        "coverage_pct": 100.0
+      },
+      "introductiondate": {
+        "example": "09/02/2010 00:00:00",
+        "non_empty": 315,
+        "coverage_pct": 28.2
+      },
+      "issue": {
+        "example": "<div class=\"ExternalClassB2FB62F252414439B997A636B25AE5C4\">Sections 7 (1) and 10 of the la...",
+        "non_empty": 268,
+        "coverage_pct": 24.0
+      },
+      "itemid": {
+        "example": "001-105026",
+        "non_empty": 1116,
+        "coverage_pct": 100.0
+      },
+      "judgementdate": {
+        "example": "27/09/2011 00:00:00",
+        "non_empty": 603,
+        "coverage_pct": 54.0
+      },
+      "jurisdiction": {
+        "example": "Council of Europe",
+        "non_empty": 1116,
+        "coverage_pct": 100.0
+      },
+      "kpthesaurus": {
+        "example": "451",
+        "non_empty": 1114,
+        "coverage_pct": 99.8
+      },
+      "lang": {
+        "example": "en",
+        "non_empty": 1116,
+        "coverage_pct": 100.0
+      },
+      "languageisocode": {
+        "example": "ENG",
+        "non_empty": 1116,
+        "coverage_pct": 100.0
+      },
+      "matched_keywords": {
+        "example": "['parental alienation', 'best interests of the child', 'contact rights']",
+        "non_empty": 1116,
+        "coverage_pct": 100.0
+      },
+      "nonviolation": {
+        "example": "8",
+        "non_empty": 222,
+        "coverage_pct": 19.9
+      },
+      "originatingbody": {
+        "example": "23",
+        "non_empty": 878,
+        "coverage_pct": 78.7
+      },
+      "publishedby": {
+        "example": "Reports of Judgments and Decisions 2000-VIII",
+        "non_empty": 57,
+        "coverage_pct": 5.1
+      },
+      "rank": {
+        "example": "17.719248",
+        "non_empty": 1116,
+        "coverage_pct": 100.0
+      },
+      "referencedate": {
+        "example": "07/06/1999 00:00:00",
+        "non_empty": 6,
+        "coverage_pct": 0.5
+      },
+      "representedby": {
+        "example": "BEYER S.",
+        "non_empty": 938,
+        "coverage_pct": 84.1
+      },
+      "respondent": {
+        "example": "DEU",
+        "non_empty": 1116,
+        "coverage_pct": 100.0
+      },
+      "retrieved_date": {
+        "example": "2026-07-07",
+        "non_empty": 1116,
+        "coverage_pct": 100.0
+      },
+      "rulesofcourt": {
+        "example": "17",
+        "non_empty": 41,
+        "coverage_pct": 3.7
+      },
+      "scl": {
+        "example": "Baumann v. France, no. 33592/96, ECHR 2001-V (extracts);Bove v. Italy, (dec.) no. 30595/02...",
+        "non_empty": 417,
+        "coverage_pct": 37.4
+      },
+      "separateopinion": {
+        "example": "TRUE",
+        "non_empty": 602,
+        "coverage_pct": 53.9
+      },
+      "source": {
+        "example": "echr",
+        "non_empty": 1116,
+        "coverage_pct": 100.0
+      },
+      "source_url": {
+        "example": "https://hudoc.echr.coe.int/eng?i=001-105026",
+        "non_empty": 1116,
+        "coverage_pct": 100.0
+      },
+      "stable_id": {
+        "example": "001-105026",
+        "non_empty": 1116,
+        "coverage_pct": 100.0
+      },
+      "text_length": {
+        "example": "14653",
+        "non_empty": 1116,
+        "coverage_pct": 100.0
+      },
+      "typedescription": {
+        "example": "8",
+        "non_empty": 1116,
+        "coverage_pct": 100.0
+      },
+      "violation": {
+        "example": "8;8-1",
+        "non_empty": 408,
+        "coverage_pct": 36.6
+      }
+    }
+  },
+  "ris": {
+    "rows": 548,
+    "fields": {
+      "anmerkung": {
+        "example": "Vgl auch; Beisatz: Hier: Bei Schuldspruch nach §§ 146, 147 Abs 1 Z 1 zweiter Fall StGB: Fr...",
+        "non_empty": 443,
+        "coverage_pct": 80.8
+      },
+      "applikation": {
+        "example": "Justiz",
+        "non_empty": 548,
+        "coverage_pct": 100.0
+      },
+      "content_url_html": {
+        "example": "https://www.ris.bka.gv.at/Dokumente/Justiz/JJR_19811203_OGH0002_0130OS00176_8000000_002/JJ...",
+        "non_empty": 548,
+        "coverage_pct": 100.0
+      },
+      "content_url_pdf": {
+        "example": "https://www.ris.bka.gv.at/Dokumente/Justiz/JJR_19811203_OGH0002_0130OS00176_8000000_002/JJ...",
+        "non_empty": 38,
+        "coverage_pct": 6.9
+      },
+      "content_url_xml": {
+        "example": "https://www.ris.bka.gv.at/Dokumente/Justiz/JJR_19811203_OGH0002_0130OS00176_8000000_002/JJ...",
+        "non_empty": 38,
+        "coverage_pct": 6.9
+      },
+      "dokument_url": {
+        "example": "https://www.ris.bka.gv.at/Dokument.wxe?Abfrage=Justiz&Dokumentnummer=JJR_19811203_OGH0002_...",
+        "non_empty": 548,
+        "coverage_pct": 100.0
+      },
+      "dokumenttyp": {
+        "example": "Rechtssatz",
+        "non_empty": 548,
+        "coverage_pct": 100.0
+      },
+      "ecli": {
+        "example": "ECLI:AT:OGH0002:1981:RS0088276",
+        "non_empty": 38,
+        "coverage_pct": 6.9
+      },
+      "entscheidungsdatum": {
+        "example": "2006-04-05",
+        "non_empty": 548,
+        "coverage_pct": 100.0
+      },
+      "entscheidungstexte": {
+        "example": "[{'Geschaeftszahl': '13  Os   176/80', 'Dokumenttyp': 'Text', 'Gericht': 'OGH', 'Entscheid...",
+        "non_empty": 38,
+        "coverage_pct": 6.9
+      },
+      "from_rechtssatz": {
+        "example": "['RS0088276']",
+        "non_empty": 510,
+        "coverage_pct": 93.1
+      },
+      "full_text": {
+        "example": "RIS Dokument\nGericht\nOGH\nEntscheidungsdatum\n03.12.1981\nGeschäftszahl\n13Os176/80; 13Os148/8...",
+        "non_empty": 548,
+        "coverage_pct": 100.0
+      },
+      "geaendert": {
+        "example": "2011-01-27",
+        "non_empty": 37,
+        "coverage_pct": 6.8
+      },
+      "gericht": {
+        "example": "OGH",
+        "non_empty": 548,
+        "coverage_pct": 100.0
+      },
+      "geschaeftszahl": {
+        "example": "13Os176/80; 13Os148/82; 13Os48/83; 11Os201/83; 13Os7/06p",
+        "non_empty": 548,
+        "coverage_pct": 100.0
+      },
+      "id": {
+        "example": "JJR_19811203_OGH0002_0130OS00176_8000000_002",
+        "non_empty": 548,
+        "coverage_pct": 100.0
+      },
+      "jurisdiction": {
+        "example": "AT",
+        "non_empty": 548,
+        "coverage_pct": 100.0
+      },
+      "lang": {
+        "example": "de",
+        "non_empty": 548,
+        "coverage_pct": 100.0
+      },
+      "matched_keywords": {
+        "example": "['Entfremdung']",
+        "non_empty": 548,
+        "coverage_pct": 100.0
+      },
+      "n_entscheidungstexte": {
+        "example": "5",
+        "non_empty": 548,
+        "coverage_pct": 100.0
+      },
+      "normen": {
+        "example": "SGG §14; StGB §28 Cb",
+        "non_empty": 38,
+        "coverage_pct": 6.9
+      },
+      "organ": {
+        "example": "OGH",
+        "non_empty": 548,
+        "coverage_pct": 100.0
+      },
+      "rechtsgebiete": {
+        "example": "Strafrecht",
+        "non_empty": 38,
+        "coverage_pct": 6.9
+      },
+      "rechtssatznummern": {
+        "example": "RS0088276",
+        "non_empty": 38,
+        "coverage_pct": 6.9
+      },
+      "retrieved_date": {
+        "example": "2026-07-07",
+        "non_empty": 548,
+        "coverage_pct": 100.0
+      },
+      "schlagworte": {
+        "example": "Die Gleichstellungen ab 1 Ob 509/83 erfolgten ohne Bezug zu § 142 ABGB.",
+        "non_empty": 7,
+        "coverage_pct": 1.3
+      },
+      "source": {
+        "example": "ris",
+        "non_empty": 548,
+        "coverage_pct": 100.0
+      },
+      "source_url": {
+        "example": "https://www.ris.bka.gv.at/Dokument.wxe?Abfrage=Justiz&Dokumentnummer=JJR_19811203_OGH0002_...",
+        "non_empty": 548,
+        "coverage_pct": 100.0
+      },
+      "stable_id": {
+        "example": "JJR_19811203_OGH0002_0130OS00176_8000000_002",
+        "non_empty": 548,
+        "coverage_pct": 100.0
+      },
+      "text_length": {
+        "example": "1339",
+        "non_empty": 548,
+        "coverage_pct": 100.0
+      },
+      "veroeffentlicht": {
+        "example": "1997-06-15",
+        "non_empty": 37,
+        "coverage_pct": 6.8
+      }
+    }
+  },
+  "swiss": {
+    "rows": 2031,
+    "fields": {
+      "Datum": {
+        "example": "2025-12-30",
+        "non_empty": 2031,
+        "coverage_pct": 100.0
+      },
+      "Signatur": {
+        "example": "ZH_OG_001_LZ250034_2025-12-30",
+        "non_empty": 2031,
+        "coverage_pct": 100.0
+      },
+      "Spider": {
+        "example": "ZH/ZH_OG/ZH_OG_001",
+        "non_empty": 2031,
+        "coverage_pct": 100.0
+      },
+      "Sprache": {
+        "example": "de",
+        "non_empty": 2031,
+        "coverage_pct": 100.0
+      },
+      "abstract": {
+        "example": "Kinderbelange (vorsorgliche Massnahmen)",
+        "non_empty": 1421,
+        "coverage_pct": 70.0
+      },
+      "canton": {
+        "example": "ZH",
+        "non_empty": 2031,
+        "coverage_pct": 100.0
+      },
+      "collection": {
+        "example": "446973/28/2601",
+        "non_empty": 2031,
+        "coverage_pct": 100.0
+      },
+      "content": {
+        "example": "Obergericht des Kantons Zürich\nI. Zivilkammer \n\nGeschäfts-Nr.: LZ250034-O/U\n\nMitwirkend: O...",
+        "non_empty": 2031,
+        "coverage_pct": 100.0
+      },
+      "content_type": {
+        "example": "application/pdf",
+        "non_empty": 2031,
+        "coverage_pct": 100.0
+      },
+      "content_url": {
+        "example": "https://entscheidsuche.ch/docs/ZH_Obergericht/ZH_OG_001_LZ250034_2025-12-30.pdf",
+        "non_empty": 2031,
+        "coverage_pct": 100.0
+      },
+      "court_type": {
+        "example": "ZH_OG",
+        "non_empty": 2031,
+        "coverage_pct": 100.0
+      },
+      "hierarchy": {
+        "example": "['ZH', 'ZH_OG', 'ZH_OG_001']",
+        "non_empty": 2031,
+        "coverage_pct": 100.0
+      },
+      "jurisdiction": {
+        "example": "CH",
+        "non_empty": 2031,
+        "coverage_pct": 100.0
+      },
+      "lang": {
+        "example": "de",
+        "non_empty": 2031,
+        "coverage_pct": 100.0
+      },
+      "matched_keywords": {
+        "example": "['Entfremdung', 'elterliche Entfremdung']",
+        "non_empty": 2031,
+        "coverage_pct": 100.0
+      },
+      "reference": {
+        "example": "['LZ250034']",
+        "non_empty": 2031,
+        "coverage_pct": 100.0
+      },
+      "retrieved_date": {
+        "example": "2026-07-07",
+        "non_empty": 2031,
+        "coverage_pct": 100.0
+      },
+      "scrapedate": {
+        "example": "2026-05-03",
+        "non_empty": 2031,
+        "coverage_pct": 100.0
+      },
+      "source": {
+        "example": "swiss",
+        "non_empty": 2031,
+        "coverage_pct": 100.0
+      },
+      "source_url": {
+        "example": "https://entscheidsuche.ch/docs/ZH_Obergericht/ZH_OG_001_LZ250034_2025-12-30.pdf",
+        "non_empty": 2031,
+        "coverage_pct": 100.0
+      },
+      "stable_id": {
+        "example": "ZH_OG_001_LZ250034_2025-12-30",
+        "non_empty": 2031,
+        "coverage_pct": 100.0
+      },
+      "text_length": {
+        "example": "80612",
+        "non_empty": 2031,
+        "coverage_pct": 100.0
+      },
+      "title": {
+        "example": "Zürich Obergericht Zivilkammern 30.12.2025 LZ250034",
+        "non_empty": 2031,
+        "coverage_pct": 100.0
+      },
+      "year": {
+        "example": "2025",
+        "non_empty": 2031,
+        "coverage_pct": 100.0
+      }
+    }
+  },
+  "echr_extracted (derived)": {
+    "rows": 1116,
+    "fields": {
+      "id": {
+        "example": "001-105026",
+        "non_empty": 1116,
+        "coverage_pct": 100.0
+      },
+      "title": {
+        "example": "HEIDEMANN v. GERMANY",
+        "non_empty": 1116,
+        "coverage_pct": 100.0
+      },
+      "respondent_state": {
+        "example": "DEU",
+        "non_empty": 1116,
+        "coverage_pct": 100.0
+      },
+      "articles": {
+        "example": "8",
+        "non_empty": 1112,
+        "coverage_pct": 99.6
+      },
+      "judgment_date": {
+        "example": "2011-05-17",
+        "non_empty": 1114,
+        "coverage_pct": 99.8
+      },
+      "importance": {
+        "example": "4",
+        "non_empty": 1116,
+        "coverage_pct": 100.0
+      },
+      "genre": {
+        "example": "admissibility",
+        "non_empty": 1116,
+        "coverage_pct": 100.0
+      },
+      "outcome": {
+        "example": "inadmissible",
+        "non_empty": 845,
+        "coverage_pct": 75.7
+      },
+      "outcome_conf": {
+        "example": "0.95",
+        "non_empty": 1116,
+        "coverage_pct": 100.0
+      },
+      "alienation_alleged": {
+        "example": "False",
+        "non_empty": 1116,
+        "coverage_pct": 100.0
+      },
+      "alienation_conf": {
+        "example": "0.15",
+        "non_empty": 1116,
+        "coverage_pct": 100.0
+      },
+      "alienation_evidence": {
+        "example": "Furthermore_ there was no indication that the child had been influenced by his mother or t...",
+        "non_empty": 127,
+        "coverage_pct": 11.4
+      },
+      "url": {
+        "example": "https://hudoc.echr.coe.int/eng?i=001-105026",
+        "non_empty": 1116,
+        "coverage_pct": 100.0
+      },
+      "confidence": {
+        "example": "{\"respondent_state\": 1.0, \"articles\": 1.0, \"judgment_date\": 0.9, \"importance\": 1.0, \"genre...",
+        "non_empty": 1116,
+        "coverage_pct": 100.0
+      },
+      "provenance": {
+        "example": "{\"respondent_state\": \"meta:respondent\", \"articles\": \"meta:article\", \"judgment_date\": \"ecli...",
+        "non_empty": 1116,
+        "coverage_pct": 100.0
+      },
+      "alienation_conf_cal": {
+        "example": "0.3333333333333333",
+        "non_empty": 1116,
+        "coverage_pct": 100.0
+      }
+    }
+  },
+  "echr_themes (derived)": {
+    "rows": 1116,
+    "fields": {
+      "id": {
+        "example": "001-105026",
+        "non_empty": 1116,
+        "coverage_pct": 100.0
+      },
+      "title": {
+        "example": "HEIDEMANN v. GERMANY",
+        "non_empty": 1116,
+        "coverage_pct": 100.0
+      },
+      "respondent_state": {
+        "example": "DEU",
+        "non_empty": 1116,
+        "coverage_pct": 100.0
+      },
+      "articles": {
+        "example": "8",
+        "non_empty": 1112,
+        "coverage_pct": 99.6
+      },
+      "judgment_date": {
+        "example": "2011-05-17",
+        "non_empty": 1114,
+        "coverage_pct": 99.8
+      },
+      "importance": {
+        "example": "4",
+        "non_empty": 1116,
+        "coverage_pct": 100.0
+      },
+      "genre": {
+        "example": "admissibility",
+        "non_empty": 1116,
+        "coverage_pct": 100.0
+      },
+      "outcome": {
+        "example": "inadmissible",
+        "non_empty": 845,
+        "coverage_pct": 75.7
+      },
+      "outcome_conf": {
+        "example": "0.95",
+        "non_empty": 1116,
+        "coverage_pct": 100.0
+      },
+      "alienation_alleged": {
+        "example": "False",
+        "non_empty": 1116,
+        "coverage_pct": 100.0
+      },
+      "alienation_conf": {
+        "example": "0.15",
+        "non_empty": 1116,
+        "coverage_pct": 100.0
+      },
+      "alienation_evidence": {
+        "example": "Furthermore_ there was no indication that the child had been influenced by his mother or t...",
+        "non_empty": 127,
+        "coverage_pct": 11.4
+      },
+      "url": {
+        "example": "https://hudoc.echr.coe.int/eng?i=001-105026",
+        "non_empty": 1116,
+        "coverage_pct": 100.0
+      },
+      "confidence": {
+        "example": "{\"respondent_state\": 1.0, \"articles\": 1.0, \"judgment_date\": 0.9, \"importance\": 1.0, \"genre...",
+        "non_empty": 1116,
+        "coverage_pct": 100.0
+      },
+      "provenance": {
+        "example": "{\"respondent_state\": \"meta:respondent\", \"articles\": \"meta:article\", \"judgment_date\": \"ecli...",
+        "non_empty": 1116,
+        "coverage_pct": 100.0
+      },
+      "alienation_conf_cal": {
+        "example": "0.3333333333333333",
+        "non_empty": 1116,
+        "coverage_pct": 100.0
+      },
+      "primary_theme": {
+        "example": "alienation",
+        "non_empty": 1116,
+        "coverage_pct": 100.0
+      },
+      "theme_group": {
+        "example": "private_dispute",
+        "non_empty": 1116,
+        "coverage_pct": 100.0
+      },
+      "matched_keywords": {
+        "example": "parental alienation;best interests of the child;contact rights",
+        "non_empty": 1116,
+        "coverage_pct": 100.0
+      },
+      "text_length": {
+        "example": "14653",
+        "non_empty": 1116,
+        "coverage_pct": 100.0
+      },
+      "is_abduction_hague": {
+        "example": "False",
+        "non_empty": 1116,
+        "coverage_pct": 100.0
+      },
+      "is_adoption": {
+        "example": "False",
+        "non_empty": 1116,
+        "coverage_pct": 100.0
+      },
+      "is_care_removal": {
+        "example": "False",
+        "non_empty": 1116,
+        "coverage_pct": 100.0
+      },
+      "is_alienation": {
+        "example": "True",
+        "non_empty": 1116,
+        "coverage_pct": 100.0
+      },
+      "is_domestic_violence": {
+        "example": "False",
+        "non_empty": 1116,
+        "coverage_pct": 100.0
+      },
+      "is_custody_residence": {
+        "example": "False",
+        "non_empty": 1116,
+        "coverage_pct": 100.0
+      },
+      "is_contact_access": {
+        "example": "True",
+        "non_empty": 1116,
+        "coverage_pct": 100.0
+      },
+      "is_length_procedural": {
+        "example": "False",
+        "non_empty": 1116,
+        "coverage_pct": 100.0
+      }
+    }
+  }
+}

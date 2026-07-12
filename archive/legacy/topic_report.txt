@@ -1,0 +1,134 @@
+========================================================================
+TOPIC ANALYSIS REPORT
+Thematic analysis of single-parenthood discourse - DACH Reddit
+Generated: 2026-03-06 01:00:44
+========================================================================
+
+-- OVERVIEW --
+  Total posts analysed:     49,765
+  Topics discovered:            11
+  Classified posts:         22,249 (44.7%)
+  Unclassified (topic -1):  27,516 (55.3%)
+
+-- TOPIC DEFINITIONS --
+
+  UNCLASSIFIED -- 23,314 posts (46.8%)
+    Top terms: angst, allerdings, ehrlich, solltest, alleine, falsch, beziehung, schlecht
+
+  Topic 0 -- 14,105 posts (28.3%)
+    Top terms: beziehung, alleine, angst, partner, allerdings, solltest, bleiben, verhalten
+
+  Topic 1 -- 2,204 posts (4.4%)
+    Top terms: jobs, beruf, job, verdienen, pay, bezahlt, arbeitgeber, arbeite
+
+  Topic 2 -- 2,112 posts (4.2%)
+    Top terms: berlin, germany, frankfurt, europe, funeral, euro, inheritance, families
+
+  Topic 3 -- 1,618 posts (3.3%)
+    Top terms: rent, housing, apartment, wohnzimmer, wohngeld, wohnungen, nebenkosten, schlafzimmer
+
+  Topic 4 -- 741 posts (1.5%)
+    Top terms: moderators message, contact moderators, mobile app, moderators, message compose, kommentiere, chatgpt, posts
+
+  Topic 5 -- 723 posts (1.5%)
+    Top terms: polizei rufen, polizei, police, polizisten, beleidigungen, anwalt, schaden, gesetze
+
+  Topic 6 -- 442 posts (0.9%)
+    Top terms: koalition, politisch, politische, political, partei, demokratie, liberal, downvotes
+
+  Topic 7 -- 105 posts (0.2%)
+    Top terms: speak language, accent, racist, sprache, english speaking, languages, native, afrikanische
+
+  Topic 8 -- 96 posts (0.2%)
+    Top terms: please contact, ask advice, contact, telefonseelsorge, contact moderators, deutschland, berlin, telephone
+
+  Topic 9 -- 68 posts (0.1%)
+    Top terms: bikes, bike, riding, roads, europe, trip, cities, tschechien
+
+  Topic 10 -- 35 posts (0.1%)
+    Top terms: grafik, diagramm, finanz, finanzfluss, erstellen, karte, ausgaben, erstellen vielleicht
+
+
+-- TOPIC x SENTIMENT --
+  Topic                                    | Posts |  %Pos |  %Neu |  %Neg |   Mean
+  -----------------------------------------------------------------------------------
+  Unclassified                             | 27516 | 14.4% | 31.3% | 54.3% | -0.40
+  T0: beziehung, alleine, angst, part...   | 14105 | 12.6% | 30.2% | 57.2% | -0.45
+  T1: jobs, beruf, job, verdienen, pay     |  2204 |  9.3% | 38.4% | 52.4% | -0.43
+  T2: berlin, germany, frankfurt, eur...   |  2112 |  6.3% | 27.2% | 66.5% | -0.60
+  T3: rent, housing, apartment, wohnz...   |  1618 | 12.4% | 33.7% | 53.9% | -0.42
+  T4: moderators message, contact mod...   |   741 |  6.5% | 64.6% | 28.9% | -0.22
+  T5: polizei rufen, polizei, police,...   |   723 |  7.9% | 37.9% | 54.2% | -0.46
+  T6: koalition, politisch, politisch...   |   442 |  5.2% | 20.4% | 74.4% | -0.69
+  T7: speak language, accent, racist,...   |   105 |  5.7% | 30.5% | 63.8% | -0.58
+  T8: please contact, ask advice, con...   |    96 |  0.0% | 99.0% |  1.0% | -0.01
+  T9: bikes, bike, riding, roads, europe   |    68 | 25.0% | 33.8% | 41.2% | -0.16
+  T10: grafik, diagramm, finanz, fina...   |    35 | 31.4% | 60.0% |  8.6% | +0.23
+
+  Most negative topic: T6: koalition, politisch, politische, political, partei
+    (mean score -0.692)
+  Most positive topic: T10: grafik, diagramm, finanz, finanzfluss, erstellen
+    (mean score +0.229)
+
+
+-- TOPIC PREVALENCE BY YEAR (% of classified posts) --
+  Year    T0      T1      T2      T3      T4      T5      T6      T7      T8      T9    
+  ----------------------------------------------------------------------------------------
+  2015     30.0%    0.0%   60.0%   10.0%    0.0%    0.0%    0.0%    0.0%    0.0%    0.0%
+  2016     57.8%    4.1%   23.0%    0.0%    3.9%    2.5%    6.2%    2.3%    0.0%    0.0%
+  2017     32.6%   15.6%   26.5%    9.3%    2.4%    2.0%   11.5%    0.1%    0.0%    0.0%
+  2018     32.9%   28.6%    8.6%    5.7%    1.4%    0.0%   21.4%    0.0%    0.0%    0.0%
+  2019     26.6%   51.9%   10.1%    5.1%    1.9%    2.5%    0.6%    0.6%    0.0%    0.0%
+  2020     45.4%   18.3%   13.8%    8.7%    0.7%    0.9%   10.9%    1.1%    0.0%    0.2%
+  2021     55.7%    6.3%   16.7%    0.9%    5.0%    6.3%    1.4%    7.2%    0.0%    0.5%
+  2022     39.5%   21.7%   16.1%   13.2%    1.6%    6.0%    0.7%    0.5%    0.3%    0.2%
+  2023     56.8%    8.4%   16.7%    8.1%    2.5%    4.3%    0.6%    1.3%    0.5%    0.8%
+  2024     68.4%   10.8%    5.6%    6.0%    2.8%    2.6%    2.3%    0.3%    0.5%    0.3%
+  2025     70.2%    6.8%    6.5%    7.2%    4.3%    3.2%    0.9%    0.1%    0.5%    0.2%
+  2026     63.6%    0.0%   36.4%    0.0%    0.0%    0.0%    0.0%    0.0%    0.0%    0.0%
+
+
+-- ERA COMPARISON: 2015-2020 vs 2021-2025 --
+  Topic                                    | 2015-20 | 2021-25 |  Change
+  --------------------------------------------------------------------
+  T0: beziehung, alleine, angst, part...   |   40.6% |   65.6% | UP 25.0%
+  T2: berlin, germany, frankfurt, eur...   |   21.0% |    8.4% | DOWN 12.7%
+  T6: koalition, politisch, politisch...   |    9.6% |    1.2% | DOWN 8.4%
+  T1: jobs, beruf, job, verdienen, pay     |   17.0% |    9.2% | DOWN 7.8%
+  T5: polizei rufen, polizei, police,...   |    1.8% |    3.4% | UP 1.6%
+  T4: moderators message, contact mod...   |    2.2% |    3.4% | UP 1.2%
+
+-- DISTINCTIVE VOCABULARY BY ERA --
+  Words disproportionately frequent in each period:
+
+  Rising terms (more frequent 2021-2025):
+    >> hast                       (delta = +0.0118)
+    >> kannst                     (delta = +0.0082)
+    >> mal                        (delta = +0.0076)
+    >> vielleicht                 (delta = +0.0073)
+    >> beziehung                  (delta = +0.0068)
+    >> leben                      (delta = +0.0063)
+    >> hilfe                      (delta = +0.0058)
+    >> frau                       (delta = +0.0058)
+    >> einfach                    (delta = +0.0057)
+    >> tochter                    (delta = +0.0056)
+    >> mann                       (delta = +0.0054)
+    >> zeit                       (delta = +0.0054)
+
+  Declining terms (less frequent vs 2015-2020):
+    << child                      (delta = -0.0079)
+    << woman                      (delta = -0.0078)
+    << like                       (delta = -0.0072)
+    << abortion                   (delta = -0.0067)
+    << people                     (delta = -0.0067)
+    << right                      (delta = -0.0063)
+    << get                        (delta = -0.0058)
+    << would                      (delta = -0.0057)
+    << think                      (delta = -0.0057)
+    << know                       (delta = -0.0055)
+    << parents                    (delta = -0.0055)
+    << one                        (delta = -0.0053)
+
+========================================================================
+END OF TOPIC ANALYSIS REPORT
+========================================================================

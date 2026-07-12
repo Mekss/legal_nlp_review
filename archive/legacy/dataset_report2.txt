@@ -1,0 +1,123 @@
+========================================================================
+DATASET OVERVIEW REPORT
+Public Opinion on Single Parenthood — DACH Reddit (2015–2023)
+Generated: 2026-03-04 23:35:05
+========================================================================
+
+── COLLECTION STATS ──
+  Total raw records fetched:          21,411
+  Records after deduplication:         19,612
+  Records after language filtering:    19,451
+  Final dataset size:                  19,451
+  Date range: 2015-01-18 to 2026-02-23
+  Total text volume:                  7,911,957 characters
+
+── COVERAGE: POSTS PER SUBREDDIT ──
+  r/germany               5,706  ( 29.3%)
+  r/de                    3,491  ( 17.9%)
+  r/Finanzen              2,411  ( 12.4%)
+  r/Ratschlag             1,280  (  6.6%)
+  r/Austria               1,131  (  5.8%)
+  r/berlin                1,032  (  5.3%)
+  r/FragReddit              864  (  4.4%)
+  r/beziehungen             847  (  4.4%)
+  r/Eltern                  718  (  3.7%)
+  r/europe                  654  (  3.4%)
+  r/Switzerland             538  (  2.8%)
+  r/AskEurope               504  (  2.6%)
+  r/Munich                   93  (  0.5%)
+  r/wien                     89  (  0.5%)
+  r/cologne                  35  (  0.2%)
+  r/frankfurt                24  (  0.1%)
+  r/hamburg                  21  (  0.1%)
+  r/stuttgart                 8  (  0.0%)
+  r/FragNeFrau                5  (  0.0%)
+
+── COVERAGE: POSTS PER YEAR ──
+    2015     17  (  0.1%)
+    2016     23  (  0.1%)
+    2017     51  (  0.3%)
+    2018     24  (  0.1%)
+    2019     75  (  0.4%)
+    2020  1,124  (  5.8%)
+    2021  2,026  ( 10.4%)
+    2022  7,983  ( 41.0%)
+    2023  8,018  ( 41.2%)
+    2024     81  (  0.4%)
+    2025     24  (  0.1%)
+    2026      5  (  0.0%)
+
+── COVERAGE: POSTS PER LANGUAGE ──
+  German (de)  10,551  ( 54.2%)
+  English (en)  8,900  ( 45.8%)
+
+── COVERAGE: POSTS PER KEYWORD ──
+  'Alleinerziehende'  4,835  ( 24.9%)
+  'single parent'  4,593  ( 23.6%)
+  'alleinerziehend'  3,700  ( 19.0%)
+  'single mother'  2,010  ( 10.3%)
+  'single mom'  1,460  (  7.5%)
+  'Alleinerziehender'  1,154  (  5.9%)
+  'Alleinerziehenden'    681  (  3.5%)
+  'single father'    563  (  2.9%)
+  'single dad'    324  (  1.7%)
+  'Alleinerzieherin'    127  (  0.7%)
+  'lone parent'      4  (  0.0%)
+
+── TOP 5 MOST ACTIVE AUTHORS (anonymised) ──
+  User_1:   291 posts
+  User_2:    87 posts
+  User_3:    69 posts
+  User_4:    66 posts
+  User_5:    64 posts
+
+── ENGAGEMENT STATS ──
+  Post score (upvotes):
+    Mean=9.8  Median=2  Min=-194  Max=8188
+  Comment count:
+    Mean=1.6  Median=0  Min=0  Max=3037
+
+  Top 5 highest-scoring posts:
+    [2020] r/de  score=8188  “Donald Trump ist das beste Beispiel dafür, dass Erfolg nichts mit Können zu tun hat - oder: Der Neof”
+    [2022] r/Finanzen  score=2261  “Warum sich Arbeit in DE auch bei hohen Steuern lohnt”
+    [2022] r/germany  score=1264  “What the german government did for someone I know”
+    [2021] r/de  score=1245  “AUSBLICK 2021/Das ändert sich: Grundrente, Soli-Abbau, teureres Benzin”
+    [2022] r/Finanzen  score=1174  “Einen eigenen Lebensentwurf wählen”
+
+  Top 5 most-discussed posts (by comment count):
+    [2017] r/europe  comments=3037  “Dutch General Election 2017 Megathread”
+    [2017] r/europe  comments=1721  “French elections megathread”
+    [2020] r/de  comments=1718  “Donald Trump ist das beste Beispiel dafür, dass Erfolg nichts mit Können zu tun hat - oder: Der Neof”
+    [2017] r/europe  comments=1436  “Czech Parliamentary Elections 2017”
+    [2023] r/germany  comments=737  “Are highly-qualified/skilled non-eu immigrants planning to leave Germany?”
+
+── TEXT STATS ──
+  Post length (characters):  Mean=407  Median=208
+  Post length (words):       Mean=69  Median=36
+  Vocabulary size: 114,566 unique words
+
+  Top 20 non-stopword terms:
+    people                    2,476
+    mal                       2,337
+    like                      2,304
+    would                     2,049
+    schon                     2,041
+    get                       2,037
+    mehr                      1,904
+    kind                      1,748
+    immer                     1,721
+    german                    1,713
+    einfach                   1,564
+    even                      1,561
+    one                       1,545
+    germany                   1,524
+    know                      1,242
+    gibt                      1,136
+    kinder                    1,102
+    think                     1,079
+    much                      1,065
+    gut                       1,045
+
+========================================================================
+END OF DATASET REPORT
+========================================================================

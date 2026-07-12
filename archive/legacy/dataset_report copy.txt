@@ -1,0 +1,112 @@
+========================================================================
+DATASET OVERVIEW REPORT
+Public Opinion on Single Parenthood — DACH Reddit (2015–2023)
+Generated: 2026-03-04 15:58:13
+========================================================================
+
+── COLLECTION STATS ──
+  Total raw records fetched:             265
+  Records after deduplication:            265
+  Records after language filtering:       265
+  Final dataset size:                     265
+  Date range: 2015-01-18 to 2023-12-29
+  Total text volume:                  853,315 characters
+
+── COVERAGE: POSTS PER SUBREDDIT ──
+  r/de                       71  ( 26.8%)
+  r/germany                  61  ( 23.0%)
+  r/europe                   48  ( 18.1%)
+  r/Austria                  30  ( 11.3%)
+  r/AskEurope                23  (  8.7%)
+  r/berlin                    9  (  3.4%)
+  r/Switzerland               8  (  3.0%)
+  r/wien                      7  (  2.6%)
+  r/beziehungen               5  (  1.9%)
+  r/hamburg                   2  (  0.8%)
+  r/Munich                    1  (  0.4%)
+
+── COVERAGE: POSTS PER YEAR ──
+    2015     15  (  5.7%)
+    2016     23  (  8.7%)
+    2017     30  ( 11.3%)
+    2018     30  ( 11.3%)
+    2019     28  ( 10.6%)
+    2020     25  (  9.4%)
+    2021     33  ( 12.5%)
+    2022     30  ( 11.3%)
+    2023     51  ( 19.2%)
+
+── COVERAGE: POSTS PER LANGUAGE ──
+  English (en)    158  ( 59.6%)
+  German (de)    107  ( 40.4%)
+
+── COVERAGE: POSTS PER KEYWORD ──
+  'Alleinerziehende'     63  ( 23.8%)
+  'single mother'     62  ( 23.4%)
+  'single father'     36  ( 13.6%)
+  'alleinerziehend'     28  ( 10.6%)
+  'single parent'     25  (  9.4%)
+  'single mom'     17  (  6.4%)
+  'single dad'     14  (  5.3%)
+  'Alleinerziehenden'     13  (  4.9%)
+  'lone parent'      3  (  1.1%)
+  'Alleinerzieherin'      2  (  0.8%)
+  'Alleinerziehender'      2  (  0.8%)
+
+── TOP 5 MOST ACTIVE AUTHORS (anonymised) ──
+  User_1:    22 posts
+  User_2:     4 posts
+  User_3:     4 posts
+  User_4:     3 posts
+  User_5:     2 posts
+
+── ENGAGEMENT STATS ──
+  Post score (upvotes):
+    Mean=107.4  Median=6  Min=0  Max=8188
+  Comment count:
+    Mean=70.2  Median=17  Min=0  Max=1721
+
+  Top 5 highest-scoring posts:
+    [2020] r/de  score=8188  “Donald Trump ist das beste Beispiel dafür, dass Erfolg nichts mit Können zu tun hat - oder: Der Neof”
+    [2021] r/de  score=1245  “AUSBLICK 2021/Das ändert sich: Grundrente, Soli-Abbau, teureres Benzin”
+    [2020] r/de  score=831  “Schwanger und alleinerziehend?”
+    [2021] r/de  score=827  “Miete und Wohnen in Deutschland - eine Analyse in Karten”
+    [2023] r/europe  score=807  “40-year-old single mother aims to beat Putin in Presidential race”
+
+  Top 5 most-discussed posts (by comment count):
+    [2017] r/europe  comments=1721  “French elections megathread”
+    [2020] r/de  comments=1718  “Donald Trump ist das beste Beispiel dafür, dass Erfolg nichts mit Können zu tun hat - oder: Der Neof”
+    [2017] r/europe  comments=1436  “Czech Parliamentary Elections 2017”
+    [2019] r/europe  comments=1306  “Polish National Election Megathread”
+    [2023] r/germany  comments=737  “Are highly-qualified/skilled non-eu immigrants planning to leave Germany?”
+
+── TEXT STATS ──
+  Post length (characters):  Mean=3220  Median=1474
+  Post length (words):       Mean=541  Median=261
+  Vocabulary size: 27,397 unique words
+
+  Top 20 non-stopword terms:
+    people                      263
+    one                         258
+    would                       257
+    german                      241
+    get                         209
+    like                        199
+    single                      196
+    even                        191
+    know                        162
+    much                        145
+    time                        144
+    first                       143
+    european                    129
+    could                       127
+    tell                        124
+    country                     118
+    years                       117
+    never                       116
+    work                        115
+    germany                     114
+
+========================================================================
+END OF DATASET REPORT
+========================================================================

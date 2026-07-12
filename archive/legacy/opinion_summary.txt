@@ -1,0 +1,106 @@
+========================================================================
+OPINION DISTRIBUTION REPORT
+Public Opinion on Single Parenthood — DACH Reddit (2015–2025)
+Generated: 2026-03-06 00:14:45
+========================================================================
+
+── OVERALL DISTRIBUTION (Primary = RoBERTa) ──
+  Positive  : 6,430  (12.9%)
+  Neutral   : 15,851  (31.9%)
+  Negative  : 27,484  (55.2%)
+
+  VADER distribution:
+    Positive  : 9,001  (18.1%)
+    Neutral   : 15,019  (30.2%)
+    Negative  : 25,745  (51.7%)
+
+  VADER–RoBERTa agreement rate: 47.2% (23,504/49,765)
+  RoBERTa confidence: Mean=0.687  Median=0.685  Min=0.334  Max=0.968
+
+── BY YEAR ──
+    Year               | Total |  %Pos |  %Neu |  %Neg |  Mean
+  --------------------------------------------------------------
+  2015                   |    18 | 11.1% | 44.4% | 44.4% | -0.33
+  2016                   |   942 |  8.9% | 27.5% | 63.6% | -0.55
+  2017                   |  1671 |  9.8% | 28.3% | 61.9% | -0.52
+  2018                   |   157 |  5.7% | 36.9% | 57.3% | -0.52
+  2019                   |   367 |  6.0% | 25.9% | 68.1% | -0.62
+  2020                   |  1159 | 17.4% | 31.9% | 50.6% | -0.33
+  2021                   |   486 | 10.9% | 35.6% | 53.5% | -0.43
+  2022                   |  3238 | 13.1% | 33.0% | 53.8% | -0.41
+  2023                   |  5386 | 11.8% | 32.3% | 55.9% | -0.44
+  2024                   | 13272 | 14.9% | 31.5% | 53.6% | -0.39
+  2025                   | 23046 | 12.4% | 32.2% | 55.4% | -0.43
+  2026                   |    23 | 17.4% | 13.0% | 69.6% | -0.52
+
+  Most positive year: 2020 (mean score -0.332)
+  Most negative year: 2019 (mean score -0.621)
+  Biggest YoY shift:  2020 (Δ = 0.289)
+
+── BY SUBREDDIT (ranked most positive → most negative) ──
+    Subreddit          | Total |  %Pos |  %Neu |  %Neg |  Mean
+  --------------------------------------------------------------
+  AskEurope              |   240 |  8.8% | 46.7% | 44.6% | -0.36
+  Austria                |  1416 |  9.5% | 30.8% | 59.7% | -0.50
+  Eltern                 |  5116 | 16.4% | 32.3% | 51.3% | -0.35
+  Finanzen               |  7283 | 16.0% | 36.4% | 47.6% | -0.32
+  FragNeFrau             |    74 | 10.8% | 40.5% | 48.6% | -0.38
+  FragReddit             |   418 | 11.7% | 35.9% | 52.4% | -0.41
+  FragtMaenner           |  2603 | 10.4% | 38.5% | 51.1% | -0.41
+  Munich                 |   123 | 34.1% | 31.7% | 34.1% | +0.00
+  Ratschlag              | 15998 | 13.2% | 30.3% | 56.6% | -0.43
+  Switzerland            |   306 | 13.4% | 23.2% | 63.4% | -0.50
+  berlin                 |   681 |  8.7% | 24.4% | 67.0% | -0.58
+  beziehungen            |  7669 | 10.1% | 30.0% | 59.9% | -0.50
+  cologne                |    14 | 42.9% | 35.7% | 21.4% | +0.21
+  de                     |  3851 | 13.2% | 31.9% | 54.8% | -0.42
+  europe                 |  1342 |  7.1% | 22.8% | 70.1% | -0.63
+  frankfurt              |    10 |  0.0% | 70.0% | 30.0% | -0.30
+  germany                |  2307 | 10.9% | 31.3% | 57.8% | -0.47
+  hamburg                |    98 | 22.4% | 39.8% | 37.8% | -0.15
+  stuttgart              |     4 |  0.0% | 50.0% | 50.0% | -0.50
+  wien                   |   212 | 18.9% | 41.0% | 40.1% | -0.21
+
+── BY LANGUAGE ──
+    Language           | Total |  %Pos |  %Neu |  %Neg |  Mean
+  --------------------------------------------------------------
+  de                     | 44308 | 13.2% | 32.1% | 54.7% | -0.41
+  en                     |  5457 | 10.8% | 29.5% | 59.7% | -0.49
+  → English posts are more negative on average.
+
+── BY KEYWORD ──
+    Keyword            | Total |  %Pos |  %Neu |  %Neg |  Mean
+  --------------------------------------------------------------
+  Alleinerziehende       | 16212 | 12.7% | 31.4% | 55.9% | -0.43
+  Alleinerziehenden      |  4721 | 15.3% | 31.7% | 52.9% | -0.38
+  Alleinerziehender      |  2192 | 13.8% | 34.1% | 52.1% | -0.38
+  alleinerziehend        | 21325 | 13.1% | 32.9% | 54.0% | -0.41
+  lone parent            |   224 |  4.9% | 25.9% | 69.2% | -0.64
+  single dad             |   111 |  5.4% | 41.4% | 53.2% | -0.48
+  single father          |   126 |  7.9% | 24.6% | 67.5% | -0.60
+  single mom             |  1142 | 15.1% | 31.9% | 53.1% | -0.38
+  single mother          |  1698 |  8.6% | 28.2% | 63.3% | -0.55
+  single parent          |  2014 |  9.9% | 26.1% | 64.1% | -0.54
+
+  Keyword with most negative discourse: 'lone parent' (69.2% negative)
+
+── EXTREME POSTS ──
+  Top 3 most POSITIVE posts (by RoBERTa confidence):
+    [2023] r/de (de) conf=0.960
+      "Das war richtig schön zu lesen! Danke! Hoffentlich wird morgen auch wieder ein toller Tag! Oder zumindest ein Guter!…"
+    [2024] r/Finanzen (de) conf=0.959
+      "Geilster Post heute! Danke dafür, hat mich zum Lachen gebracht!…"
+    [2024] r/Eltern (de) conf=0.958
+      "Was für ein schöner Moment, danke fürs Teilen. 🥰 ganz viel Liebe zurück. ❤️…"
+
+  Top 3 most NEGATIVE posts (by RoBERTa confidence):
+    [2025] r/germany (en) conf=0.968
+      "This is honestly crazy to me. How can a German law like this force citizens of other countries to obey it ? So sorry OP. This is a very unfair situati…"
+    [2024] r/Ratschlag (de) conf=0.967
+      "dein kollege macht sich absolut lächerlich…"
+    [2024] r/Finanzen (de) conf=0.967
+      "Ja unbedingt nachdenken ob der Zwanni einen jetzt in den Ruin treibt. Ihr seid solche unfassbaren Geier, das ist schon krank.…"
+
+========================================================================
+END OF OPINION DISTRIBUTION REPORT
+========================================================================

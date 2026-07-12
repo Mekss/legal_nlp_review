@@ -1,0 +1,11 @@
+.DS_Store
+.venv/
+# corpora, caches, extraction outputs — never committed
+data/
+archive/*.json
+archive/*.npz
+# notebook HTML exports and scrape caches
+src/*.html
+src/gdelt_raw_cache.json
+archive/legacy/*.html
+archive/legacy/gdelt_raw_cache.json

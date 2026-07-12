@@ -1,0 +1,123 @@
+========================================================================
+DATASET OVERVIEW REPORT
+Public Opinion on Single Parenthood — DACH Reddit (2015–2023)
+Generated: 2026-03-05 17:31:25
+========================================================================
+
+── COLLECTION STATS ──
+  Total raw records fetched:          62,744
+  Records after deduplication:         58,268
+  Records after language filtering:    49,765
+  Final dataset size:                  49,765
+  Date range: 2015-01-18 to 2026-02-27
+  Total text volume:                  20,164,928 characters
+
+── COVERAGE: POSTS PER SUBREDDIT ──
+  r/Ratschlag             15,998  ( 32.1%)
+  r/beziehungen           7,669  ( 15.4%)
+  r/Finanzen              7,283  ( 14.6%)
+  r/Eltern                5,116  ( 10.3%)
+  r/de                    3,851  (  7.7%)
+  r/FragtMaenner          2,603  (  5.2%)
+  r/germany               2,307  (  4.6%)
+  r/Austria               1,416  (  2.8%)
+  r/europe                1,342  (  2.7%)
+  r/berlin                  681  (  1.4%)
+  r/FragReddit              418  (  0.8%)
+  r/Switzerland             306  (  0.6%)
+  r/AskEurope               240  (  0.5%)
+  r/wien                    212  (  0.4%)
+  r/Munich                  123  (  0.2%)
+  r/hamburg                  98  (  0.2%)
+  r/FragNeFrau               74  (  0.1%)
+  r/cologne                  14  (  0.0%)
+  r/frankfurt                10  (  0.0%)
+  r/stuttgart                 4  (  0.0%)
+
+── COVERAGE: POSTS PER YEAR ──
+    2015     18  (  0.0%)
+    2016    942  (  1.9%)
+    2017  1,671  (  3.4%)
+    2018    157  (  0.3%)
+    2019    367  (  0.7%)
+    2020  1,159  (  2.3%)
+    2021    486  (  1.0%)
+    2022  3,238  (  6.5%)
+    2023  5,386  ( 10.8%)
+    2024  13,272  ( 26.7%)
+    2025  23,046  ( 46.3%)
+    2026     23  (  0.0%)
+
+── COVERAGE: POSTS PER LANGUAGE ──
+  German (de)  44,308  ( 89.0%)
+  English (en)  5,457  ( 11.0%)
+
+── COVERAGE: POSTS PER KEYWORD ──
+  'alleinerziehend'  21,325  ( 42.9%)
+  'Alleinerziehende'  16,212  ( 32.6%)
+  'Alleinerziehenden'  4,721  (  9.5%)
+  'Alleinerziehender'  2,192  (  4.4%)
+  'single parent'  2,014  (  4.0%)
+  'single mother'  1,698  (  3.4%)
+  'single mom'  1,142  (  2.3%)
+  'lone parent'    224  (  0.5%)
+  'single father'    126  (  0.3%)
+  'single dad'    111  (  0.2%)
+
+── TOP 5 MOST ACTIVE AUTHORS (anonymised) ──
+  User_1:   484 posts
+  User_2:   223 posts
+  User_3:    90 posts
+  User_4:    90 posts
+  User_5:    72 posts
+
+── ENGAGEMENT STATS ──
+  Post score (upvotes):
+    Mean=7.8  Median=2  Min=-206  Max=8188
+  Comment count:
+    Mean=0.9  Median=0  Min=0  Max=1718
+
+  Top 5 highest-scoring posts:
+    [2020] r/de  score=8188  "Donald Trump ist das beste Beispiel dafür, dass Erfolg nichts mit Können zu tun hat - oder: Der Neof"
+    [2024] r/Ratschlag  score=2249  "Ist das schon Sport oder mach ich mich lächerlich? "
+    [2025] r/Ratschlag  score=1718  "Ich weiß langsam nicht mehr, wie ich meinem Sohn erklären soll, warum wir uns so vieles nicht leiste"
+    [2025] r/Ratschlag  score=1316  "Frau möchte 14 Tage nach Schweden ohne Familie mit Geld aus einem Kredit"
+    [2022] r/germany  score=1264  "What the german government did for someone I know"
+
+  Top 5 most-discussed posts (by comment count):
+    [2020] r/de  comments=1718  "Donald Trump ist das beste Beispiel dafür, dass Erfolg nichts mit Können zu tun hat - oder: Der Neof"
+    [2025] r/Ratschlag  comments=1058  "Frau möchte 14 Tage nach Schweden ohne Familie mit Geld aus einem Kredit"
+    [2025] r/FragtMaenner  comments=774  "Single-Mütter mit jungen Kindern aus genau diesem Grund nicht daten zu wollen ist meiner Meinung nac"
+    [2024] r/Ratschlag  comments=707  "Ist das schon Sport oder mach ich mich lächerlich? "
+    [2024] r/Ratschlag  comments=640  "Ungewollt schwanger "
+
+── TEXT STATS ──
+  Post length (characters):  Mean=405  Median=226
+  Post length (words):       Mean=66  Median=37
+  Vocabulary size: 187,426 unique words
+
+  Top 20 non-stopword terms:
+    mal                       10,518
+    kind                      8,667
+    schon                     8,411
+    mehr                      7,479
+    einfach                   6,985
+    immer                     6,977
+    kinder                    6,406
+    hast                      4,619
+    mutter                    4,567
+    gibt                      4,509
+    vielleicht                4,360
+    gut                       4,349
+    ganz                      3,960
+    geht                      3,668
+    leben                     3,618
+    wäre                      3,586
+    halt                      3,423
+    wirklich                  3,410
+    zeit                      3,406
+    kannst                    3,293
+
+========================================================================
+END OF DATASET REPORT
+========================================================================

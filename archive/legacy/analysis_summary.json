@@ -1,0 +1,112 @@
+{
+  "metadata": {
+    "generated": "2026-03-06T01:01:39.000995",
+    "subreddits": [
+      "Austria",
+      "de",
+      "Switzerland",
+      "wien",
+      "DACH",
+      "germany",
+      "Oesterreich",
+      "Schweiz",
+      "berlin",
+      "hamburg",
+      "Munich",
+      "cologne",
+      "Frankfurt",
+      "Stuttgart",
+      "Düsseldorf",
+      "AskEurope",
+      "europe",
+      "beziehungen",
+      "eltern",
+      "fragreddit",
+      "fragtmaenner",
+      "fragnefrau",
+      "finanzen",
+      "ratschlag"
+    ],
+    "keywords": [
+      "Alleinerziehende",
+      "Alleinerziehender",
+      "Einelternfamilie",
+      "alleinerziehend",
+      "Alleinerziehenden",
+      "Alleinerzieherin",
+      "Sozialmutter",
+      "Solovater",
+      "Solomutter",
+      "single parent",
+      "single mother",
+      "single father",
+      "single mom",
+      "single dad",
+      "lone parent"
+    ],
+    "year_range": [
+      2015,
+      2023
+    ],
+    "total_records": 49765,
+    "total_posts": 1127,
+    "total_comments": 48638
+  },
+  "preprocessing": {
+    "raw_posts": 1279,
+    "raw_comments": 61465,
+    "raw_total": 62744,
+    "after_cleaning": 58268,
+    "after_dedup": 58268,
+    "after_relevance": 50080,
+    "after_lang_filter": 49765,
+    "final_size": 49765
+  },
+  "statistical_tests": {
+    "mann_kendall": {
+      "tau": 0.0909,
+      "p_value": 0.7373
+    },
+    "kruskal_wallis": {
+      "H": 140.6558,
+      "p_value": 0.0
+    },
+    "mann_whitney": {
+      "U": 93104422.0,
+      "p_value": 0.0
+    },
+    "chi_square": {
+      "chi2": 739.8902,
+      "p_value": 0.0,
+      "dof": 38
+    },
+    "pearson_vol_neg": {
+      "r": -0.1849,
+      "p_value": 0.5652
+    }
+  },
+  "overall_sentiment": {
+    "positive": 6430,
+    "neutral": 15851,
+    "negative": 27484,
+    "mean_score": -0.4231
+  },
+  "topics": {
+    "n_topics": 11,
+    "n_outliers": 27516,
+    "topic_distribution": {
+      "-1": 27516,
+      "0": 14105,
+      "1": 2204,
+      "2": 2112,
+      "3": 1618,
+      "4": 741,
+      "5": 723,
+      "6": 442,
+      "7": 105,
+      "8": 96,
+      "9": 68,
+      "10": 35
+    }
+  }
+}
