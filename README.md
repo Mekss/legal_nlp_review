@@ -86,6 +86,7 @@ flowchart TD
 | **corpus** | `master_import.ipynb` | build the corpus for a topic (2000–2025, 3 sources) | topic is a parameter; IDs + provenance make every number traceable |
 | | `corpus_audit.ipynb` | which documents are noise? | replaces manual curation with a verified shortlist (blind recovery: 100 % of known noise in bottom decile) |
 | | `data_summary.ipynb` | what does the corpus contain? | read-only sanity check; `reports/data_registry.json` lists every field |
+| | `value_registry.ipynb` | which VALUES can SQL questions use? | per-field value→count dictionaries for all categorical fields (raw + derived tables) → `reports/value_registry.json` + paste-ready SQL hints |
 | **RQ1 — capability boundary** | `rag_echr_ris.ipynb` | can retrieval answer explanatory questions with citations — and refuse the rest? | the Bucket-1 engine + 3 abstention layers |
 | | `router_evaluation.ipynb` | does the router keep aggregates away from generation? | accuracy 0.95, fabrication risk 0.10 (n=60, Wilson CIs in report) |
 | | `retrieval_evaluation.ipynb` | is what retrieval returns actually usable? | precision@6 ≈ 0.45–0.47, the replicated genre finding (only court reasoning counts) |
@@ -100,7 +101,9 @@ flowchart TD
 | | `trends_and_variation.ipynb` | did Strasbourg get faster? who finds violations? cantonal practice? | topic-agnostic metadata trends |
 | | `principle_faithfulness.ipynb` | do Rechtssätze match their case-law? | embedding-geometry check of a legal-genre assumption |
 | **worked examples** | `diachronic_analysis.ipynb`, `echr_framing_analysis.ipynb` | how did vocabulary/framing shift? | supporting evidence; produce reading shortlists, not findings |
-| **PoC** | `ask.ipynb` | one entry point, any question | the typology as one executable function — open this first |
+| **field lifecycle** | `field_factory.ipynb` | turn a term + definition into a validated content field | machine drafts lexicon/sample/labels — human only reviews (~120 rows); flip rate reported as integrity check |
+| | `field_deploy.ipynb` | ship a validated field as a calibrated, queryable column | quality-gated on the reviewed labels; writes parquet + sidecar meta; `ask.ipynb` discovers it automatically |
+| **PoC** | `ask.ipynb` | one entry point, any question | the typology as one executable function — open this first; auto-routes to any deployed field |
 
 ## Layout
 
