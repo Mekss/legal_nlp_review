@@ -42,10 +42,11 @@ SKIP_FIELDS = {"jurisdiction", "lang", "languageisocode", "matched_keywords",
                "content_type", "from_rechtssatz", "alienation_alleged",
                "alienation_conf", "alienation_conf_cal", "outcome_conf"}
 
-# the three code cells of ask.ipynb that build the whole system
-# (pipeline loader, metadata relations, dispatcher) -- same marker
-# technique the notebook itself uses, so web and notebook cannot drift
-BOOT_MARKERS = ["RAG_NB   = Path", "_swiss = _json.loads", "def _h_alienation"]
+# the four code cells of ask.ipynb that build the whole system
+# (pipeline loader, metadata relations, Bucket-4 diachronic, dispatcher) -- same
+# marker technique the notebook itself uses, so web and notebook cannot drift
+BOOT_MARKERS = ["RAG_NB   = Path", "_swiss = _json.loads", "def _h_diachronic",
+                "def _h_alienation"]
 
 _LOCK = threading.Lock()  # ask_anything + duckdb con are not thread-safe
 
@@ -97,7 +98,10 @@ def suggestion_pool():
     con = globals()["con"]
     pool = [{"field": "parental alienation allegation", "source": "ECHR content",
              "values": ["extracted + calibrated, threshold-aware"],
-             "fill": "How many cases involve an allegation of parental alienation?"}]
+             "fill": "How many cases involve an allegation of parental alienation?"},
+            {"field": "wording change over time", "source": "ECHR diachronic",
+             "values": ["keyness evidence + guarded summary"],
+             "fill": "How was parental alienation framed before 2015 and after 2015?"}]
     seen = set()
     if REGISTRY_PATH.exists():
         reg = json.loads(REGISTRY_PATH.read_text())
