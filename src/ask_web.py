@@ -20,6 +20,7 @@ import threading
 from datetime import datetime
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
+from urllib.parse import unquote
 
 HOST = "127.0.0.1"
 PORT = 8765
@@ -28,6 +29,7 @@ ASK_NB = HERE / "ask.ipynb"
 PAGE = HERE / "ask_web.html"
 HIST_PATH = HERE.parent / "data" / "ask_web_history.json"
 REGISTRY_PATH = HERE.parent / "reports" / "value_registry.json"  # value_registry.ipynb
+PROV_DIR = HERE.parent / "reports" / "retrieval_provenance"      # written per grounded answer
 
 # value-registry source -> (queryable duckdb table, display label)
 REG_SOURCES = {
@@ -187,6 +189,14 @@ class Handler(BaseHTTPRequestHandler):
                                  "suggestions": suggestions()})
         elif self.path == "/suggest":
             self._send(200, {"suggestions": suggestions()})
+        elif self.path.startswith("/provenance/"):
+            # serve the per-answer audit JSON by basename only -- no path traversal
+            name = Path(unquote(self.path[len("/provenance/"):])).name
+            f = PROV_DIR / name
+            if f.suffix == ".json" and f.is_file():
+                self._send(200, f.read_bytes())
+            else:
+                self._send(404, {"error": "no provenance file " + name})
         else:
             self._send(404, {"error": "not found"})
 
