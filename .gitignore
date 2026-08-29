@@ -9,3 +9,7 @@ src/*.html
 src/gdelt_raw_cache.json
 archive/legacy/*.html
 archive/legacy/gdelt_raw_cache.json
+
+# secrets — API keys for hosted generation backends
+.env
+*.key
