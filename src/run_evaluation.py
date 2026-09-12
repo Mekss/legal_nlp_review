@@ -1,11 +1,17 @@
 """Re-run evaluation.ipynb and export a plain HTML of its cells + outputs.
 
 Usage (from repo root or src/):
-    .venv/bin/python src/run_evaluation.py             # re-execute, then export
-    RUN_LLM=1 .venv/bin/python src/run_evaluation.py   # also score the live NL->SQL sample
+    .venv/bin/python src/run_evaluation.py                # re-execute, then export
+    EVAL_FIELD=<name> .venv/bin/python src/run_evaluation.py   # pick a content field to score
     RENDER_ONLY=1 .venv/bin/python src/run_evaluation.py  # just re-export existing outputs
 
-Writes: src/evaluation.ipynb (outputs refreshed) + reports/evaluation.html.
+The notebook has no RUN_LLM gate any more. It degrades on what is actually reachable:
+- generation backend: whatever GEN_BACKEND names (probed once, recorded in the output);
+- NL->SQL: runs live when `ollama serve` is up, otherwise scores from
+  data/synthetic_qa_cache.json, otherwise registers itself pending with the reason.
+
+Writes: src/evaluation.ipynb (outputs refreshed) + reports/evaluation.html
+        + reports/evaluation_results.json + reports/evaluation_summary.md.
 No jupyter needed (jupyter here resolves to anaconda; this runs in-process).
 """
 import contextlib
@@ -26,7 +32,8 @@ nb = json.loads(NB.read_text())
 # ---- re-execute code cells in one shared namespace (unless RENDER_ONLY) ----
 if os.environ.get("RENDER_ONLY", "0") != "1":
     g = {}
-    print(f"executing {NB.name} (RUN_LLM={os.environ.get('RUN_LLM','0')}) ...")
+    print(f"executing {NB.name} "
+          f"(EVAL_FIELD={os.environ.get('EVAL_FIELD') or 'auto-discover'}) ...", flush=True)
     for cell in nb["cells"]:
         if cell["cell_type"] != "code":
             continue

@@ -25,7 +25,7 @@ HERE = Path(__file__).resolve().parent
 ASK_NB = HERE / "ask.ipynb"
 RETR_NB = HERE / "retrieval_evaluation.ipynb"
 OUT = HERE.parent / "reports" / "citation_check.json"
-BOOT_MARKERS = ["RAG_NB   = Path", "_swiss = _json.loads", "def _h_diachronic", "def _h_alienation"]
+BOOT_MARKERS = ["RAG_NB   = Path", "_swiss = _json.loads", "def _h_diachronic", "def ask_anything"]
 
 QUOTE_RE = re.compile(r"[\"“«]([^\"”»]{25,400})[\"”»]")
 MIN_QUOTE_WORDS = 5      # shorter "quotes" are usually a term of art, not a claimed quotation
@@ -136,6 +136,14 @@ def main():
                   f"unseen={len(r['citations_real_but_unseen'])} "
                   f"quotes={r['quotes_checked']}/{len(r['quotes_unverified'])} bad", flush=True)
             OUT.write_text(json.dumps({"run_at": datetime.now().isoformat(timespec="seconds"),
+                                       # which model produced these answers. A hosted provider
+                                       # can change the weights behind a model string without
+                                       # notice, so a citation-precision figure that does not
+                                       # name its backend is not reproducible even in principle.
+                                       "backend": globals().get("GEN_BACKEND"),
+                                       "model": (globals().get("GEN_MODEL")
+                                                 if globals().get("GEN_BACKEND") == "ollama"
+                                                 else globals().get("GEN_API_MODEL")),
                                        "summary": summarise(rows), "rows": rows},
                                       ensure_ascii=False, indent=1))   # checkpoint every answer
 
