@@ -1,6 +1,7 @@
 """Sweep every metadata dimension a deployed content field can be asked about.
 
-Run:  .venv/bin/python src/scope_selftest.py
+Run:  .venv/bin/python src/scope_selftest.py              # sweep everything
+      .venv/bin/python src/scope_selftest.py --dimensions  # just list what is queryable
 
 The point of this file is that the sweep WRITES ITSELF. It profiles the corpus, and for every
 dimension it finds it generates a question, resolves the scope, runs the SQL, and compares the
@@ -23,6 +24,21 @@ DATA = ROOT / "data"
 random.seed(0)
 
 
+def load_defs(names, nb_path=ROOT / "src" / "ask.ipynb"):
+    """Pull named top-level functions out of the notebook, so the test runs the shipped code."""
+    out = []
+    for cell in json.load(open(nb_path))["cells"]:
+        lines = "".join(cell["source"]).splitlines()
+        starts = [i for i, l in enumerate(lines) if l.startswith("def ")]
+        for i in starts:
+            name = lines[i][4:lines[i].index("(")]
+            if name not in names:
+                continue
+            end = next((j for j in starts if j > i), len(lines))
+            out.append("\n".join(lines[i:end]))
+    return "\n\n".join(out)
+
+
 def load_scope_block(nb_path=ROOT / "src" / "ask.ipynb"):
     """The shipped resolver, lifted verbatim out of the notebook."""
     for cell in json.load(open(nb_path))["cells"]:
@@ -40,16 +56,23 @@ echr["year"] = pd.to_datetime(echr["judgment_date"], errors="coerce").dt.year
 con = duckdb.connect()
 con.register("echr", echr)
 
-# echr_meta as the live pipeline shapes it (values synthesised -- this proves the view JOIN
-# picks up columns `echr` does not have; the live check runs against the real one)
-con.register("echr_meta", pd.DataFrame({
-    "id": echr.id,
-    # the real HUDOC spellings: one token, upper case. "Grand Chamber" as a person types it
-    # only resolves because the resolver closes up spaces between adjacent words.
-    "formation": [random.choice(["GRANDCHAMBER", "CHAMBER", "COMMITTEE"]) for _ in range(len(echr))],
-    "duration_days": [random.randint(200, 4000) for _ in range(len(echr))],
-    "separate_opinion": [random.random() < 0.2 for _ in range(len(echr))],
-    "importance": echr.importance, "year": echr.year}))
+# the REAL echr_meta, built by running ask.ipynb's own construction code -- so the sweep
+# profiles the columns the live pipeline profiles, not a stand-in that could drift from it
+def load_meta_block(nb_path=ROOT / "src" / "ask.ipynb"):
+    for cell in json.load(open(nb_path))["cells"]:
+        src = "".join(cell["source"])
+        if "echr_meta = pd.DataFrame(" in src and "_echr_raw" in src:
+            # includes the echr_hudoc build, which sits between echr_meta and echr_kp
+            return src[src.index("from datetime import datetime as _dt"):src.index("echr_kp = pd.DataFrame(")]
+    raise SystemExit("no echr_meta block found in ask.ipynb")
+
+
+DATA_DIR = DATA
+df = echr                                     # `_extr_year` reads the extraction-layer dates
+_json = json
+exec(load_meta_block(), globals())
+con.register("echr_meta", echr_meta)
+con.register("echr_hudoc", echr_hudoc)
 
 _GROUP_SYNONYMS = {"theme": ["primary_theme"], "primary theme": ["primary_theme"],
                    "theme group": ["theme_group"], "state": ["respondent_state"],
@@ -74,6 +97,20 @@ FIELDS = sorted(p.name[len("field_"):-len("_deployed.parquet")]
 for f in FIELDS:
     con.register(f"field_{f}", pd.read_parquet(DATA / f"field_{f}_deployed.parquet"))
 
+# the routing + conjunction handler, also lifted from the notebook
+DEPLOYED_FIELDS = {}
+for _m in sorted(DATA.glob("field_*_meta.json")):
+    _d = json.loads(_m.read_text())
+    if (DATA / f"field_{_d['field']}_deployed.parquet").exists():
+        DEPLOYED_FIELDS[_d["field"]] = _d
+
+
+def run_sql(sql):
+    return con.execute(sql).df()
+
+
+exec(load_defs({"_match_deployed_fields", "_match_deployed_field", "_h_deployed_fields"}), globals())
+
 
 def counts(field, where):
     return con.execute(f"""SELECT COUNT(*) FILTER (f."{field}" AND f.conf_cal >= 0.7), COUNT(*)
@@ -97,21 +134,40 @@ def probe_for(col, dim, field):
     if col == "year":
         return f"{stem} in 2022", "e.year = 2022"
     if dim["kind"] == "cat":
-        v = next(x for x in frequent(col) if len(str(x)) >= 4)
-        return f"{stem} with {spaced} {str(v).replace('_', ' ')}", f"e.{col} = '{v}'"
+        # a value shorter than _DIM_MIN_LEN is deliberately unmatchable ('ENG', 'DEU'): too
+        # collision-prone to accept as a bare word. Such a column has no probe, by design.
+        v = next((x for x in frequent(col) if len(str(x)) >= 4), None)
+        if v is not None:
+            return f"{stem} with {spaced} {str(v).replace('_', ' ')}", f"e.{col} = '{v}'"
+        # every value is below the bare-word floor: reachable only by naming the column, and
+        # only if the column HAS an unambiguous name ('respondent' is shared with
+        # `respondent_state`, so it names neither)
+        if not _DIM_PREFIXES.get(col):
+            return None, None
+        v = frequent(col)[0]
+        p = sorted(_DIM_PREFIXES[col], key=len, reverse=True)[0]
+        return f"{stem} with {p} {v}", f"e.{col} = '{v}'"
     if dim["kind"] == "bool":
         bare = col.split("_", 1)[1] if col.startswith(("is_", "has_")) else col
         return f"{stem} involving {bare.replace('_', ' ')}", f"e.{col} = TRUE"
     if dim["kind"] == "num":
+        if not _DIM_PREFIXES.get(col) or not frequent(col):
+            return None, None
         v = next(x for x in frequent(col) if x is not None)
         v = int(v) if float(v) == int(float(v)) else round(float(v), 4)
         return f"{stem} with {spaced} {v}", f"e.{col} = {v}"
+    if not dim["values"] or not _DIM_PREFIXES.get(col):
+        return None, None                      # no atoms, or no unambiguous way to name it
     atom = max(dim["values"], key=lambda a: len(str(a)))
     return (f"{stem} under {sorted(_DIM_PREFIXES[col], key=len)[0]} {atom}",
             f"""(';' || e.{col} || ';') LIKE '%;{atom};%'""")
 
 
 def main():
+    if "--dimensions" in sys.argv:             # what can I ask? -- straight from the data
+        scope_help(max_values=6)
+        return 0
+
     if not FIELDS:
         raise SystemExit("no deployed fields in data/ -- nothing to sweep")
     # sweep with the field carrying the most confident cells: a field that abstains everywhere
@@ -124,8 +180,12 @@ def main():
     fails = []
 
     print(f"{'ok':4s} {'dimension':22s} {'confident/scope':>16s}  resolved scope")
+    skipped = []
     for col, dim in _DIMS.items():
         q, expect = probe_for(col, dim, field)
+        if q is None:
+            skipped.append(col)
+            continue
         where, grp, note = _deployed_scope(q, field_terms=field)
         if where is None:
             fails.append((col, q, f"refused: {note}"))
@@ -146,13 +206,16 @@ def main():
         bad = []
         for col, dim in _DIMS.items():
             q, expect = probe_for(col, dim, other)
+            if q is None:
+                continue
             where, _, note = _deployed_scope(q, field_terms=other)
             if where is None or not where.strip():
                 bad.append((col, note or "nothing resolved"))
             elif counts(other, where) != counts(other, " AND " + expect):
                 bad.append((col, f"count mismatch | {where}"))
         fails += [(other, c, why) for c, why in bad]
-        print(f"{'ok' if not bad else 'FAIL':4s}   {other:24s} {len(_DIMS) - len(bad)}/{len(_DIMS)} dimensions")
+        n = len(_DIMS) - len(skipped)
+        print(f"{'ok' if not bad else 'FAIL':4s}   {other:24s} {n - len(bad)}/{n} dimensions")
 
     print(f"\n{'ok':4s} breakdowns")
     for col, dim in _DIMS.items():
@@ -164,6 +227,46 @@ def main():
         if grp != col:
             fails.append((col, "per " + col, f"resolved to {grp!r}"))
         print(f"{'ok' if grp == col else 'FAIL':4s}   per {col}")
+
+    print(f"\n{'ok':4s} field routing -- a question naming two columns must not answer about one")
+    ROUTING = [
+        ("in how many judgments was an expert opinion ordered", ["expert_opinion_ordered"]),
+        ("how many coercive measures cases are there", ["coercive_measures"]),
+        ("how many cases have father as an applicant", ["applicant_is_father"]),
+        ("how many cases where the child was heard", ["child_heard"]),
+        ("how many coercive measures cases in Poland since 2015", ["coercive_measures"]),
+        ("how many cases have both an expert opinion ordered and the child heard",
+         ["expert_opinion_ordered", "child_heard"]),
+        ("how many coercive measures cases also involve an expert opinion",
+         ["coercive_measures", "expert_opinion_ordered"]),
+    ]
+    for q, want in ROUTING:
+        got = _match_deployed_fields(q)
+        if got != want:
+            fails.append(("routing", q, f"matched {got}, want {want}"))
+        print(f"{'ok' if got == want else 'FAIL':4s}   {len(got)} field(s): {q}")
+
+    print(f"\n{'ok':4s} conjunction counts -- the intersection, at each field's own threshold")
+    import io, contextlib
+    for pair in [("expert_opinion_ordered", "child_heard"),
+                 ("coercive_measures", "expert_opinion_ordered"),
+                 ("child_heard", "applicant_is_father")]:
+        a, b = pair
+        ta, tb = DEPLOYED_FIELDS[a]["threshold"], DEPLOYED_FIELDS[b]["threshold"]
+        want = con.execute(f"""SELECT COUNT(*) FROM field_{a} x JOIN field_{b} y ON x.id = y.id
+                               WHERE x."{a}" AND x.conf_cal >= {ta}
+                                 AND y."{b}" AND y.conf_cal >= {tb}""").fetchone()[0]
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            _h_deployed_fields([a, b], f"how many cases have both {a.replace('_', ' ')} "
+                                       f"and {b.replace('_', ' ')}")
+        out = buf.getvalue()
+        m = _re.search(r"ANSWER: (\d+) cases where ALL", out)
+        got = int(m.group(1)) if m else None
+        ok = got == want
+        if not ok:
+            fails.append(("conjunction", f"{a}+{b}", f"handler said {got}, direct SQL {want}"))
+        print(f"{'ok' if ok else 'FAIL':4s}   {a} AND {b}: {got} (direct SQL {want})")
 
     print(f"\n{'ok':4s} refusals -- a condition the corpus cannot honour must never pass quietly")
     for q in [f"how many {field} cases per canton", f"how many {field} cases per judge",
@@ -207,8 +310,18 @@ def main():
         ("how many coercive measures cases under article 8 in Poland",
          {"articles contains '8'", "respondent_state = 'POL'"}, None),
         ("how many coercive measures cases decided by the Grand Chamber",
-         {"formation = 'GRANDCHAMBER'"}, None),
+         {"formation = 'GRANDCHAMBER'"}, None),   # HUDOC stores one token; people type two
         ("how many coercive measures cases with a separate opinion", {"separate_opinion = TRUE"}, None),
+        # the raw HUDOC layer: article-level outcomes, and short codes reached by naming
+        # the column they belong to
+        ("how many coercive measures cases with violation 8-1", {"violation contains '8-1'"}, None),
+        ("how many coercive measures cases with violation of 8-1", {"violation contains '8-1'"}, None),
+        ("how many coercive measures cases with nonviolation 8", {"nonviolation contains '8'"}, None),
+        ("how many coercive measures cases with applicability 55", {"applicability = '55'"}, None),
+        ("how many coercive measures cases with doctype of HEJUD", {"doctype = 'HEJUD'"}, None),
+        ("how many coercive measures cases with typedescription 15", {"typedescription = '15'"}, None),
+        ("how many coercive measures cases with violation 8-1 in Poland since 2015",
+         {"violation contains '8-1'", "respondent_state = 'POL'", "year >= 2015"}, None),
     ]
     for q, want, wantgrp in PHRASING:
         where, grp, note = _deployed_scope(q, field_terms=f2)
@@ -218,7 +331,15 @@ def main():
             fails.append(("phrasing", q, f"got {sorted(got)} / {grp!r}, want {sorted(want)} / {wantgrp!r}"))
         print(f"{'ok' if ok else 'FAIL':4s}   {q}")
 
-    print(f"\n==== {len(_DIMS)} dimensions swept | FAILURES: {len(fails)}")
+    if skipped:
+        print(f"\n     not addressable by value, by design -- every value is below the "
+              f"{_DIM_MIN_LEN}-character\n"
+              f"     bare-word floor AND the column has no unambiguous name to qualify them\n"
+              f"     with ('respondent' is shared with `respondent_state`, so it names neither):\n"
+              f"     {', '.join(skipped)}\n"
+              f"     (still groupable, and reachable through SQL directly)")
+    print(f"\n==== {len(_DIMS) - len(skipped)} of {len(_DIMS)} dimensions swept "
+          f"| FAILURES: {len(fails)}")
     for f in fails:
         print("    ", f)
     return 1 if fails else 0
