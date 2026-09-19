@@ -48,7 +48,8 @@ SKIP_FIELDS = {"jurisdiction", "lang", "languageisocode", "matched_keywords",
 # (pipeline loader, metadata relations, Bucket-4 diachronic, dispatcher) -- same
 # marker technique the notebook itself uses, so web and notebook cannot drift
 BOOT_MARKERS = ["RAG_NB   = Path", "_swiss = _json.loads", "def _h_diachronic",
-                "def _h_alienation"]
+                "def ask_anything"]   # was "def _h_alienation" -- that branch is retired,
+                                      # and a marker naming it stops finding the cell
 
 _LOCK = threading.Lock()  # ask_anything + duckdb con are not thread-safe
 

@@ -46,7 +46,10 @@ def load_scope_block(nb_path=ROOT / "src" / "ask.ipynb"):
         if "def _deployed_scope(" in src:
             start = src.index("# Scope resolution")
             start = src.rindex("# ---", 0, start)
-            return src[start:src.index("def _h_alienation(")]
+            # end marker: the deny-list constant that directly follows the resolver.
+            # It used to be `def _h_alienation(`, a handler that has since been retired --
+            # a slice marker naming a function is only as stable as that function.
+            return src[start:src.index("REFUSAL = (")]
     raise SystemExit("no scope block found in ask.ipynb")
 
 
@@ -109,7 +112,10 @@ def run_sql(sql):
     return con.execute(sql).df()
 
 
-exec(load_defs({"_match_deployed_fields", "_match_deployed_field", "_h_deployed_fields"}), globals())
+exec(load_defs({"_match_deployed_fields", "_match_deployed_field", "_h_deployed_fields",
+                # the caveat helpers the handlers call: not every deployed field is an
+                # LLM one, and F1 sits under a different key depending on the extractor
+                "_extractor_label", "_field_f1"}), globals())
 
 
 def counts(field, where):
@@ -204,9 +210,19 @@ def main():
         if other == field:
             continue
         bad = []
+        self_named = 0
         for col, dim in _DIMS.items():
             q, expect = probe_for(col, dim, other)
             if q is None:
+                continue
+            if col == other:
+                # A field crossed with a dimension of its own name is degenerate: the probe
+                # reads "how many <f> cases where <f> is TRUE", and masking the field's name
+                # out of the question -- which is exactly what stops a field being re-resolved
+                # as its own filter -- leaves nothing behind to resolve. `alienation_alleged`
+                # is both a deployed field and a column of echr_themes, so it is the one pair
+                # that collides. Counted and reported, not silently dropped.
+                self_named += 1
                 continue
             where, _, note = _deployed_scope(q, field_terms=other)
             if where is None or not where.strip():
@@ -214,8 +230,9 @@ def main():
             elif counts(other, where) != counts(other, " AND " + expect):
                 bad.append((col, f"count mismatch | {where}"))
         fails += [(other, c, why) for c, why in bad]
-        n = len(_DIMS) - len(skipped)
-        print(f"{'ok' if not bad else 'FAIL':4s}   {other:24s} {n - len(bad)}/{n} dimensions")
+        n = len(_DIMS) - len(skipped) - self_named
+        print(f"{'ok' if not bad else 'FAIL':4s}   {other:24s} {n - len(bad)}/{n} dimensions"
+              + (f" (+{self_named} self-named, degenerate)" if self_named else ""))
 
     print(f"\n{'ok':4s} breakdowns")
     for col, dim in _DIMS.items():
