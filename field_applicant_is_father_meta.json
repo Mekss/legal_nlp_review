@@ -1,0 +1,32 @@
+{
+  "field": "applicant_is_father",
+  "kind": "boolean",
+  "unit": null,
+  "definition": "applicant_is_father = TRUE if the person who brought the case to the Court is the father of the child concerned by the dispute, including where several applicants act together and the father is one of them. It is FALSE if the applicant is the mother, a grandparent, another relative, the child, a foster or adoptive parent, or an institution, and FALSE if the case concerns no child or does not state the applicant's relationship to the child.",
+  "lexicon": [
+    "father of the child",
+    "his daughter",
+    "his son",
+    "is the father",
+    "the applicant's daughter",
+    "the applicant's son",
+    "the applicant, the father"
+  ],
+  "threshold": 0.7,
+  "question_terms": [
+    "applicant is father",
+    "fathers",
+    "mothers or fathers",
+    "who brings the case",
+    "applicant father"
+  ],
+  "corpus": "echr_parental_alienation.json (ECHR-EN; domain of validity)",
+  "validation": {
+    "n_labels": 120,
+    "flip_rate": "45/120",
+    "llm_f1": 0.667
+  },
+  "labels_file": "field_applicant_is_father_labels.csv",
+  "model": "llama3.2",
+  "labels_provenance": "human-reviewed label"
+}

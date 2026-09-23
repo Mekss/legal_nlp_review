@@ -1,0 +1,81 @@
+question,bucket,lang,gold_route
+What positive obligations does the State have to enforce contact rights?,1,en,retrieval
+How does the ECHR assess a child's refusal to see a parent?,1,en,retrieval
+What role does the passage of time play in parent-child reunification cases?,1,en,retrieval
+Under what conditions is coercive enforcement of contact against the child's will justified?,1,en,retrieval
+How do courts weigh the best interests of the child against a parent's contact rights?,1,en,retrieval
+What does the Court consider an effective remedy in contact-enforcement cases?,1,en,retrieval
+When can custody be transferred to the other parent because of alienating behaviour?,1,en,retrieval
+What is the margin of appreciation of domestic courts in custody disputes?,1,en,retrieval
+How is expert psychological evidence treated in alienation cases?,1,en,retrieval
+What weight is given to the child's expressed wishes in contact proceedings?,1,en,retrieval
+"Wann ist von einer Vollzugsmaßnahme abzusehen, wenn sie dem Kindeswohl widerspricht?",1,de,retrieval
+Welche Voraussetzungen gelten für die gemeinsame Obsorge nach Trennung der Eltern?,1,de,retrieval
+Wie begründen Gerichte die Einschränkung des Kontaktrechts?,1,de,retrieval
+Welche Rolle spielt der Loyalitätskonflikt des Kindes bei Kontaktrechtsentscheidungen?,1,de,retrieval
+Unter welchen Voraussetzungen kann einem Elternteil die Obhut entzogen werden?,1,de,retrieval
+Wie wird Bindungstoleranz in der Rechtsprechung bewertet?,1,de,retrieval
+Was versteht die Rechtsprechung unter Kindeswohlgefährdung?,1,de,retrieval
+Wann kann das Kontaktrecht gegen den Willen des Kindes durchgesetzt werden?,1,de,retrieval
+Wie unterscheidet sich die Behandlung der Entfremdung vor dem OGH und dem EGMR?,1,de,retrieval
+Welche Bedeutung hat die Beeinflussung des Kindes durch einen Elternteil für die Obsorgeentscheidung?,1,de,retrieval
+How many cases against Norway are in the corpus?,2,en,aggregate
+Which respondent state has the most cases on contact rights?,2,en,aggregate
+What proportion of merits judgments found a violation of Article 8?,2,en,aggregate
+How many judgments were delivered after 2020?,2,en,aggregate
+What is the number of communicated cases per country?,2,en,aggregate
+How has the number of contact-rights cases changed over the years?,2,en,aggregate
+What percentage of the corpus are admissibility decisions?,2,en,aggregate
+Which importance level is most common among the judgments?,2,en,aggregate
+How many Swiss decisions come from the canton of Zurich?,2,en,aggregate
+What is the average time between communication of a case and the judgment?,2,en,aggregate
+Wie viele Fälle betreffen Österreich?,2,de,aggregate
+Wie hoch ist der Anteil der Verletzungsurteile?,2,de,aggregate
+Wie oft wurde Artikel 8 verletzt?,2,de,aggregate
+Wie viele Entscheidungen stammen aus dem Jahr 2023?,2,de,aggregate
+Welcher Staat hat die meisten Verurteilungen?,2,de,aggregate
+Wie hat sich die Zahl der Kontaktrechtsfälle über die Jahre entwickelt?,2,de,aggregate
+Wie viele Urteile ergingen nach 2020?,2,de,aggregate
+Wieviel Prozent der Fälle wurden für unzulässig erklärt?,2,de,aggregate
+Aus welchem Kanton stammen die meisten Schweizer Entscheidungen?,2,de,aggregate
+Wie ist die Gesamtzahl der anhängigen Verfahren?,2,de,aggregate
+How many cases involve an allegation of parental alienation?,3,en,aggregate
+In what proportion of cases did the mother receive custody?,3,en,aggregate
+How often do courts order supervised contact?,3,en,aggregate
+How many children refused contact with their father across the corpus?,3,en,aggregate
+What percentage of cases mention a psychological expert report?,3,en,aggregate
+Do married parents win contact disputes more often than unmarried ones?,3,en,aggregate
+How many cases involve grandparents seeking contact?,3,en,aggregate
+What share of alienation allegations were upheld by the court?,3,en,aggregate
+"On average, how many years do contact-enforcement proceedings last?",3,en,aggregate
+"In most cases, which parent is found responsible for the alienation?",3,en,aggregate
+Wie viele Kinder leben nach der Entscheidung bei der Mutter?,3,de,aggregate
+Wie häufig wird ein begleiteter Kontakt angeordnet?,3,de,aggregate
+In welchem Anteil der Fälle wurde die Entfremdung vom Gericht festgestellt?,3,de,aggregate
+Wie oft folgen die Gerichte dem Sachverständigengutachten?,3,de,aggregate
+Wie viele Fälle betreffen Großeltern als Kontaktwerber?,3,de,aggregate
+Bekommen verheiratete Eltern in der Regel eher das Sorgerecht?,3,de,aggregate
+Wie viele Verfahren dauerten länger als fünf Jahre?,3,de,aggregate
+Welcher Elternteil wird in den meisten Fällen für die Entfremdung verantwortlich gemacht?,3,de,aggregate
+Wie hoch ist die durchschnittliche Verfahrensdauer in Kontaktrechtsfällen?,3,de,aggregate
+Wie oft wird das Kindeswohl als Hauptgrund für die Kontaktverweigerung genannt?,3,de,aggregate
+How has the wording around parental alienation changed between 2000 and 2020?,4,en,diachronic
+What changed in how judgments describe custody between 2005 and 2018?,4,en,diachronic
+How did the vocabulary of contact enforcement shift over time?,4,en,diachronic
+Has the language used about a child's wishes evolved since 2010?,4,en,diachronic
+What is different in alienation judgments before 2012 and after 2013?,4,en,diachronic
+How has the framing of the child's best interests developed over time?,4,en,diachronic
+Compare the vocabulary of contact cases in 2000-2012 with 2013-2025.,4,en,diachronic
+Did the way the Court words coercive measures change after 2010?,4,en,diachronic
+Which terms around reunification became more common after 2015?,4,en,diachronic
+In what ways does the language of expert evidence differ between the early and the late judgments?,4,en,diachronic
+Wie hat sich die Formulierung zur Entfremdung in den EGMR-Urteilen zwischen 2000 und 2020 verändert?,4,de,diachronic
+Wie hat sich der Sprachgebrauch zum Kontaktrecht im Laufe der Zeit gewandelt?,4,de,diachronic
+Was hat sich in der Wortwahl zum Kindeswohl nach 2013 geändert?,4,de,diachronic
+Wie unterscheidet sich die Sprache der Urteile vor 2012 von jener nach 2013?,4,de,diachronic
+Hat sich die Begründung von Vollzugsmaßnahmen seit 2010 verändert?,4,de,diachronic
+Wie hat sich die Darstellung des Loyalitätskonflikts zwischen 2000 und 2025 entwickelt?,4,de,diachronic
+Vergleiche die Wortwahl in Kontaktrechtsfällen 2000-2012 mit 2013-2025.,4,de,diachronic
+Welche Begriffe wurden nach 2015 in Obsorgeentscheidungen häufiger verwendet?,4,de,diachronic
+Wie hat sich die Sprache des OGH zur Entfremdung seit 2005 verändert?,4,de,diachronic
+Wie hat sich die Formulierung in Schweizer Entscheiden seit 2010 verändert?,4,de,diachronic
