@@ -21,6 +21,7 @@ Kontaktrecht). It is a stress test, not the subject: the concept does not map cl
 languages and jurisdictions. The topic is a parameter (one `KEYWORDS` dict).
 
 **Demo:** `src/ask.ipynb` or the chat page `src/ask_web.py`.
+**What can I ask?** open `src/data_map.html` (rebuild: `build_data_map.py`).
 
 ## Corpus
 
@@ -53,9 +54,7 @@ staleness flags).
 
 Retrieval precision@6 (0.451) and the **genre finding** are still valid as findings but were
 measured on an earlier index, so the summary marks them `STALE`. The genre finding is that
-ECHR hits are relevant only when they land in the Court's own LAW section. The first
-extraction field, `alienation_alleged` (rules F1 0.507 vs local LLM F1 0.593), validated the
-calibration protocol. It was retired from the query surface on 2026-09-21.
+ECHR hits are relevant only when they land in the Court's own LAW section. 
 
 ## Architecture
 
@@ -97,7 +96,7 @@ flowchart TD
     SQL --> ASK
     DIA --> ASK
 
-    EVAL["evaluation.ipynb / run_evaluation.py<br/>18 metrics → reports/evaluation_*"]
+    EVAL["evaluation.ipynb / run_evaluation.py<br/>16 metrics → reports/evaluation_*"]
     ASK --> EVAL
 ```
 
