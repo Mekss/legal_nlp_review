@@ -36,26 +36,6 @@ cosine, CPU) of **155,164 passages**. Each passage carries its jurisdiction, lan
 section and a stable document ID, and citations never cross jurisdictions. Corpora and caches
 live in `data/` and are **not committed**. The importer rebuilds them from the public APIs.
 
-## Current results
-
-Recomputed by `src/evaluation.ipynb` (writes `reports/evaluation_summary.md` with CIs, tiers and
-staleness flags).
-
-| what is measured | result |
-|---|---|
-| Router: 3-way route accuracy (frozen 80-question gold set, 4 buckets, 40 DE / 40 EN) | **0.812** [0.713, 0.883] |
-| Router: known gap | 12/20 change-over-time questions reach retrieval, 10 of them German. The German Bucket-4 trigger has no patterns yet |
-| Evidence grounding: extracted evidence snippets found verbatim in the source (150/150) | **1.0** [0.975, 1.0] |
-| Citation precision: cited case IDs that were actually shown to the model | **0.976** [0.917, 0.993] |
-| Content field `applicant_is_father`: best extractor F1 | **0.783** |
-| Calibration protocol (isotonic, 5-fold out-of-fold), ECE | **0.179 → 0.068** (5 bins); holds on 2000–14 transfer data (0.084) |
-| Synthetic NL→SQL execution accuracy | **1.0** [0.898, 1.0] |
-| Trap questions correctly refused | **5/6** |
-
-Retrieval precision@6 (0.451) and the **genre finding** are still valid as findings but were
-measured on an earlier index, so the summary marks them `STALE`. The genre finding is that
-ECHR hits are relevant only when they land in the Court's own LAW section. 
-
 ## Architecture
 
 ```mermaid
