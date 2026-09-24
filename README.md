@@ -18,13 +18,9 @@ measures how well that works.
 
 The probe topic is **parental alienation / child welfare** (Entfremdung, Kindeswohl, Obsorge,
 Kontaktrecht). It is a stress test, not the subject: the concept does not map cleanly across
-languages and jurisdictions. The topic is a parameter (one `KEYWORDS` dict). What it costs to
-change it is documented in [`reusability.md`](reusability.md).
+languages and jurisdictions. The topic is a parameter (one `KEYWORDS` dict).
 
-**Start here:** [`project_overview.md`](project_overview.md) (reading guide) ·
-[`rq_registry.md`](rq_registry.md) (research question → evidence) ·
-[`reports/evaluation_summary.md`](reports/evaluation_summary.md) (all current metrics, with CIs) ·
-**demo:** `src/ask.ipynb` or the chat page `src/ask_web.py`.
+**Demo:** `src/ask.ipynb` or the chat page `src/ask_web.py`.
 
 ## Corpus
 
@@ -41,8 +37,8 @@ live in `data/` and are **not committed**. The importer rebuilds them from the p
 
 ## Current results
 
-Recomputed by `src/evaluation.ipynb`. The full table with CIs, tiers and staleness flags is
-in [`reports/evaluation_summary.md`](reports/evaluation_summary.md).
+Recomputed by `src/evaluation.ipynb` (writes `reports/evaluation_summary.md` with CIs, tiers and
+staleness flags).
 
 | what is measured | result |
 |---|---|
@@ -109,9 +105,8 @@ flowchart TD
 
 ```
 src/        notebooks and scripts (see below)
-reports/    one markdown/json report per result family, the evaluation summary,
-            field reports, value registry            (committed)
-figures/    headline figures + architecture diagram   (committed)
+reports/    generated reports; value registry + recorded citation-check run live here
+figures/    generated figures
 data/       corpora, embedding cache, gold labels, extraction tables  (never committed)
 archive/    superseded snapshots and pre-pivot work, kept for provenance
 ```
@@ -133,7 +128,7 @@ archive/    superseded snapshots and pre-pivot work, kept for provenance
 ### Deployed content fields
 
 Each field is a calibrated column with per-cell confidence and provenance. `ask.ipynb`
-discovers deployed fields automatically. The reports are in `reports/field_<name>_report.md`.
+discovers deployed fields automatically. Each field writes `reports/field_<name>_report.md`.
 
 `applicant_is_father` · `child_heard` · `coercive_measures` · `expert_opinion_ordered`
 
@@ -165,5 +160,5 @@ cd src
 
 Generation moved from local `llama3.2` to a hosted open-weight model because of hardware
 limits (~15 min per answer on the development laptop). The reasons and the before/after
-measurements are in [`reports/backend_migration.md`](reports/backend_migration.md).
+measurements are in `archive/reports_2026-09-24/backend_migration.md`.
 Retrieval, NL→SQL and extraction still run locally.
