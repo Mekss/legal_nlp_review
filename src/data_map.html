@@ -1,0 +1,1849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>data map — what the corpus can answer</title>
+<style>
+  :root {
+    --bg0:#0b1020; --bg1:#101832;
+    --panel:rgba(255,255,255,.055); --panel-border:rgba(255,255,255,.10);
+    --text:#e8ecf8; --dim:#9aa5c4; --faint:#6b7699;
+    --b1:#3987e5; --b2:#1fae7c; --b3:#9085e9; --b4:#e0a43a; --refuse:#e66767;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%;overflow:hidden}
+  body{font-family:var(--sans);color:var(--text);
+    background:
+      radial-gradient(1100px 600px at 12% -8%, rgba(57,135,229,.16), transparent 60%),
+      radial-gradient(900px 550px at 92% 4%, rgba(31,174,124,.12), transparent 55%),
+      radial-gradient(900px 700px at 60% 112%, rgba(144,133,233,.10), transparent 60%),
+      linear-gradient(180deg,var(--bg0),var(--bg1));
+    background-attachment:fixed}
+
+  header{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;align-items:center;gap:14px;
+    padding:12px 20px;background:rgba(11,16,32,.66);backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--panel-border)}
+  .logo{width:34px;height:34px;border-radius:10px;flex:none;display:grid;place-items:center;
+    font-size:17px;background:linear-gradient(135deg,var(--b1),var(--b2));box-shadow:0 4px 16px rgba(57,135,229,.4)}
+  .htext h1{font-size:15px;font-weight:700;letter-spacing:.2px;white-space:nowrap;
+    background:linear-gradient(90deg,#dfe4ff,#9be8dc);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .htext .sub{font-size:11px;color:var(--dim);margin-top:1px;white-space:nowrap}
+  header .spacer{flex:1}
+  .search{display:flex;align-items:center;gap:7px;background:var(--panel);
+    border:1px solid var(--panel-border);border-radius:9px;padding:6px 11px}
+  .search input{background:transparent;border:none;outline:none;color:var(--text);
+    font-family:var(--sans);font-size:12.5px;width:170px}
+  .search input::placeholder{color:var(--faint)}
+  .search svg{width:13px;height:13px;stroke:var(--faint);fill:none;stroke-width:2}
+  .btn{font-size:12px;color:var(--dim);background:var(--panel);border:1px solid var(--panel-border);
+    padding:7px 12px;border-radius:9px;cursor:pointer;transition:all .15s;white-space:nowrap}
+  .btn:hover{color:var(--text);border-color:var(--b1)}
+
+  .legend{position:fixed;left:18px;bottom:18px;z-index:15;background:rgba(17,24,48,.82);
+    border:1px solid var(--panel-border);border-radius:12px;padding:11px 13px;
+    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+  .legend .lt{font-size:10.5px;text-transform:uppercase;letter-spacing:.8px;color:var(--faint);margin-bottom:7px}
+  .legend .row{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--dim);
+    padding:3px 5px;border-radius:6px;cursor:pointer;transition:background .12s}
+  .legend .row:hover{background:rgba(255,255,255,.06);color:var(--text)}
+  .legend .dot{width:11px;height:11px;border-radius:50%;flex:none}
+  .legend .row.off{opacity:.35}
+
+  #stage{position:fixed;inset:0;z-index:1;cursor:grab;width:100vw;height:100vh;display:block}
+  #stage.panning{cursor:grabbing}
+  .link{stroke:rgba(154,165,196,.22);stroke-width:1.2}
+  .link.hl{stroke:rgba(232,236,248,.65);stroke-width:1.9}
+  .node circle{stroke:rgba(11,16,32,.65);stroke-width:2;cursor:pointer}
+  .node.sel circle{stroke:#fff;stroke-width:2.6}
+  .node.dim{opacity:.2}
+  .node.collapsed circle{stroke-dasharray:2.5 2.5}
+  .node text{fill:var(--text);paint-order:stroke;stroke:rgba(11,16,32,.9);stroke-width:3.2;
+    stroke-linejoin:round;-webkit-user-select:none;user-select:none;pointer-events:none}
+  .node text .count{fill:var(--dim)}
+
+  #panel{position:fixed;top:58px;right:14px;width:322px;max-height:calc(100vh - 132px);z-index:16;
+    background:rgba(17,24,48,.9);border:1px solid var(--panel-border);border-radius:16px;
+    backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 16px 50px rgba(0,0,0,.5);
+    overflow:hidden;display:flex;flex-direction:column;transition:transform .25s,opacity .25s;opacity:1}
+  #panel.hidden{transform:translateX(360px);opacity:0;pointer-events:none}
+  .p-head{padding:15px 17px 12px;border-bottom:1px solid var(--panel-border)}
+  .p-badge{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;
+    padding:3px 9px;border-radius:999px;border:1px solid;margin-bottom:9px}
+  .p-title{font-size:16.5px;font-weight:700;line-height:1.25;word-break:break-word}
+  .p-kind{font-size:11px;color:var(--faint);margin-top:3px}
+  .p-body{padding:14px 17px;overflow-y:auto}
+  .p-desc{font-size:13px;line-height:1.55;color:var(--dim);margin-bottom:13px}
+  .p-stats{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+  .stat{flex:1;min-width:76px;background:rgba(0,0,0,.25);border:1px solid var(--panel-border);
+    border-radius:10px;padding:9px 11px}
+  .stat .v{font-size:19px;font-weight:700;font-variant-numeric:tabular-nums}
+  .stat .k{font-size:10px;color:var(--faint);text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
+  .p-sec{font-size:10.5px;text-transform:uppercase;letter-spacing:.8px;color:var(--faint);margin:4px 0 8px}
+  .vlist{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
+  .vrow{display:flex;align-items:center;gap:9px;font-size:12.5px}
+  .vrow .bar{flex:1;height:7px;border-radius:4px;background:rgba(255,255,255,.07);overflow:hidden}
+  .vrow .bar i{display:block;height:100%;border-radius:4px}
+  .vrow .lab{min-width:74px;color:var(--dim);font-variant-numeric:tabular-nums;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .vrow .n{min-width:34px;text-align:right;color:var(--faint);font-variant-numeric:tabular-nums}
+  .p-ex{background:rgba(255,255,255,.04);border:1px solid var(--panel-border);border-radius:11px;padding:11px 13px;margin-top:4px}
+  .p-ex .exlab{font-size:10px;text-transform:uppercase;letter-spacing:.7px;color:var(--faint);margin-bottom:5px}
+  .p-ex .exq{font-size:13px;line-height:1.5;color:var(--text)}
+  .p-note{font-size:11px;color:var(--faint);font-style:italic;margin-top:11px;line-height:1.5}
+
+  .hint{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:14;font-size:11.5px;
+    color:var(--faint);background:rgba(11,16,32,.6);border:1px solid var(--panel-border);border-radius:999px;
+    padding:6px 15px;white-space:nowrap;pointer-events:none;transition:opacity .4s}
+  .lag{position:fixed;right:14px;bottom:18px;z-index:15;max-width:322px;font-size:11px;line-height:1.5;
+    color:#f5c86b;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.3);border-radius:11px;padding:9px 12px}
+  @media (max-width:720px){#panel{width:calc(100vw - 28px)}.search input{width:110px}.lag{display:none}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">🗺️</div>
+  <div class="htext">
+    <h1>data map — what the corpus can answer</h1>
+    <div class="sub" id="sub">loading…</div>
+  </div>
+  <div class="spacer"></div>
+  <div class="search">
+    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+    <input id="search" placeholder="find a field or value…" autocomplete="off">
+  </div>
+  <button class="btn" id="expandBtn">expand all</button>
+  <button class="btn" id="resetBtn">reset view</button>
+</header>
+
+<svg id="stage"><g id="scene"><g id="links"></g><g id="nodes"></g></g></svg>
+
+<div class="legend" id="legend">
+  <div class="lt">answer buckets — click to focus</div>
+  <div class="row" data-bucket="b1"><span class="dot" style="background:var(--b1)"></span>grounded retrieval + citations</div>
+  <div class="row" data-bucket="b2"><span class="dot" style="background:var(--b2)"></span>metadata · NL→SQL</div>
+  <div class="row" data-bucket="b3"><span class="dot" style="background:var(--b3)"></span>extracted · calibrated</div>
+  <div class="row" data-bucket="b4"><span class="dot" style="background:var(--b4)"></span>wording over time · diachronic</div>
+  <div class="row" data-bucket="refuse"><span class="dot" style="background:var(--refuse)"></span>refuses (not extracted)</div>
+</div>
+
+<div id="panel" class="hidden"></div>
+<div class="hint" id="hint">drag nodes · scroll to zoom · drag background to pan · click a node to open it</div>
+
+<script id="data" type="application/json">{
+ "generated": "2026-09-24T12:05:13",
+ "banner": "✓ 1,574 ECHR · 6,438 Austrian · 12,174 Swiss records · 4 deployed content fields (applicant_is_father, child_heard, coercive_measures, expert_opinion_ordered) · 36 ECHR scope dimensions.",
+ "root": {
+  "label": "ask anything",
+  "desc": "One question box. The router picks the only bucket that can answer faithfully."
+ },
+ "buckets": [
+  {
+   "id": "b1",
+   "label": "Bucket 1 · grounded retrieval",
+   "bucket": "b1",
+   "desc": "Open questions answered from retrieved passages with citations, or an abstention. Any topic the corpora cover.",
+   "example": "When can custody be transferred because of alienating behaviour?",
+   "children": [
+    {
+     "id": "src_echr",
+     "label": "ECHR",
+     "kind": "source",
+     "count": 1574,
+     "note": "EN · 736 judgments / 438 decisions / 400 communicated",
+     "desc": "European Court of Human Rights, Article-8 family-life case law.",
+     "example": "What does the Court require before returning an abducted child?"
+    },
+    {
+     "id": "src_ris",
+     "label": "Austria · OGH",
+     "kind": "source",
+     "count": 5841,
+     "note": "DE · 6,438 imported (649 Rechtssätze + 5,789 decision texts) → 5,841 in the civil-law working set",
+     "desc": "Oberster Gerichtshof — Austrian supreme court, via RIS.",
+     "example": "Unter welchen Voraussetzungen kann die Obhut entzogen werden?"
+    },
+    {
+     "id": "src_swiss",
+     "label": "Switzerland",
+     "kind": "source",
+     "count": 12174,
+     "note": "DE · cantonal & federal civil courts · 22 cantons",
+     "desc": "Swiss cantonal and federal decisions, via entscheidsuche.ch.",
+     "example": "Wie unterscheiden sich die Kantone bei der Obhut?"
+    }
+   ]
+  },
+  {
+   "id": "b2",
+   "label": "Bucket 2 · metadata SQL",
+   "bucket": "b2",
+   "desc": "Countable questions over structured metadata via guarded NL→SQL. The generated SQL is shown as the trust boundary.",
+   "example": "How many cases against Poland are in the corpus?",
+   "children": [
+    {
+     "id": "t_echr_meta",
+     "label": "echr_meta",
+     "kind": "table",
+     "count": 1574,
+     "desc": "ECHR case-level metadata: respondent, year, importance, formation, proceedings duration, separate opinions.",
+     "children": [
+      {
+       "id": "respondent",
+       "label": "respondent",
+       "kind": "field",
+       "example": "How many cases against Poland?",
+       "note": "",
+       "coverage": 100,
+       "n_distinct": 56,
+       "values": [
+        [
+         "RUS",
+         157
+        ],
+        [
+         "POL",
+         145
+        ],
+        [
+         "NOR",
+         116
+        ],
+        [
+         "DEU",
+         105
+        ],
+        [
+         "ROU",
+         98
+        ],
+        [
+         "UKR",
+         78
+        ],
+        [
+         "GBR",
+         64
+        ],
+        [
+         "FIN",
+         57
+        ]
+       ]
+      },
+      {
+       "id": "year",
+       "label": "year",
+       "kind": "field",
+       "example": "How many ECHR cases per year?",
+       "note": "range 2000–2025",
+       "coverage": 100,
+       "n_distinct": 26,
+       "values": [
+        [
+         "2000–2025",
+         1570
+        ]
+       ]
+      },
+      {
+       "id": "importance",
+       "label": "importance",
+       "kind": "field",
+       "example": "How many importance-1 cases are there?",
+       "note": "",
+       "coverage": 100,
+       "n_distinct": 4,
+       "values": [
+        [
+         "4",
+         1100
+        ],
+        [
+         "3",
+         325
+        ],
+        [
+         "1",
+         110
+        ],
+        [
+         "2",
+         39
+        ]
+       ]
+      },
+      {
+       "id": "formation",
+       "label": "formation",
+       "kind": "field",
+       "example": "How many Grand Chamber cases?",
+       "note": "",
+       "coverage": 47,
+       "n_distinct": 3,
+       "values": [
+        [
+         "CHAMBER",
+         574
+        ],
+        [
+         "COMMITTEE",
+         112
+        ],
+        [
+         "GRANDCHAMBER",
+         50
+        ]
+       ]
+      },
+      {
+       "id": "duration_days",
+       "label": "duration_days",
+       "kind": "field",
+       "example": "What is the median time from application to judgment?",
+       "note": "range 8–4950 · introduction → judgment; none for communicated cases",
+       "coverage": 28,
+       "n_distinct": 405,
+       "values": [
+        [
+         "8–4950",
+         448
+        ]
+       ]
+      },
+      {
+       "id": "separate_opinion",
+       "label": "separate_opinion",
+       "kind": "field",
+       "example": "How many cases have a separate opinion?",
+       "note": "",
+       "coverage": 100,
+       "n_distinct": 2,
+       "values": [
+        [
+         "no",
+         1343
+        ],
+        [
+         "yes",
+         231
+        ]
+       ]
+      }
+     ]
+    },
+    {
+     "id": "t_echr",
+     "label": "echr (extracted)",
+     "kind": "table",
+     "count": 1574,
+     "desc": "ECHR extraction/theme table — rules-derived per-case columns (outcome, genre, articles, themes) over the full corpus.",
+     "children": [
+      {
+       "id": "respondent_state",
+       "label": "respondent_state",
+       "kind": "field",
+       "example": "How many cases against Romania?",
+       "note": "derived column — distribution not shown",
+       "coverage": 100,
+       "values": []
+      },
+      {
+       "id": "genre",
+       "label": "genre",
+       "kind": "field",
+       "example": "How many merits judgments are there?",
+       "note": "derived column — distribution not shown",
+       "coverage": 100,
+       "values": []
+      },
+      {
+       "id": "outcome",
+       "label": "outcome",
+       "kind": "field",
+       "example": "What share of merits cases found a violation?",
+       "note": "derived column — distribution not shown",
+       "coverage": 71,
+       "values": []
+      },
+      {
+       "id": "articles",
+       "label": "articles",
+       "kind": "field",
+       "example": "How many cases concern Article 6?",
+       "note": "derived column — distribution not shown",
+       "coverage": 100,
+       "values": []
+      },
+      {
+       "id": "primary_theme",
+       "label": "primary_theme",
+       "kind": "field",
+       "example": "How many care-removal cases?",
+       "note": "derived column — distribution not shown",
+       "coverage": 100,
+       "values": []
+      },
+      {
+       "id": "theme_group",
+       "label": "theme_group",
+       "kind": "field",
+       "example": "How many public-protection cases?",
+       "note": "derived column — distribution not shown",
+       "coverage": 100,
+       "values": []
+      }
+     ]
+    },
+    {
+     "id": "t_swiss_meta",
+     "label": "swiss_meta",
+     "kind": "table",
+     "count": 12174,
+     "desc": "Swiss decisions metadata.",
+     "children": [
+      {
+       "id": "canton",
+       "label": "canton",
+       "kind": "field",
+       "example": "How many Swiss cases from Kanton Bern?",
+       "note": "",
+       "coverage": 100,
+       "n_distinct": 22,
+       "values": [
+        [
+         "CH",
+         4361
+        ],
+        [
+         "ZH",
+         3480
+        ],
+        [
+         "GR",
+         738
+        ],
+        [
+         "BL",
+         624
+        ],
+        [
+         "AG",
+         591
+        ],
+        [
+         "BS",
+         543
+        ],
+        [
+         "SO",
+         334
+        ],
+        [
+         "BE",
+         330
+        ]
+       ]
+      },
+      {
+       "id": "court_type",
+       "label": "court_type",
+       "kind": "field",
+       "example": "How many Swiss cases per court type?",
+       "note": "",
+       "coverage": 100,
+       "n_distinct": 48,
+       "values": [
+        [
+         "CH_BGer",
+         4136
+        ],
+        [
+         "ZH_OG",
+         3327
+        ],
+        [
+         "GR_KG",
+         738
+        ],
+        [
+         "BL_KG",
+         596
+        ],
+        [
+         "AG_OG",
+         548
+        ],
+        [
+         "BS_APG",
+         543
+        ],
+        [
+         "SO_OG",
+         327
+        ],
+        [
+         "BE_OG",
+         286
+        ]
+       ]
+      },
+      {
+       "id": "year",
+       "label": "year",
+       "kind": "field",
+       "example": "How many Swiss cases per year?",
+       "note": "range 2000–2025",
+       "coverage": 100,
+       "n_distinct": 26,
+       "values": [
+        [
+         "2000–2025",
+         12174
+        ]
+       ]
+      }
+     ]
+    },
+    {
+     "id": "t_ris_meta",
+     "label": "ris_meta",
+     "kind": "table",
+     "count": 6438,
+     "desc": "Austrian OGH metadata.",
+     "children": [
+      {
+       "id": "dokumenttyp",
+       "label": "dokumenttyp",
+       "kind": "field",
+       "example": "How many Rechtssätze vs decisions?",
+       "note": "",
+       "coverage": 100,
+       "n_distinct": 2,
+       "values": [
+        [
+         "Text",
+         5789
+        ],
+        [
+         "Rechtssatz",
+         649
+        ]
+       ]
+      },
+      {
+       "id": "senate",
+       "label": "senate",
+       "kind": "field",
+       "example": "How many cases per senate?",
+       "note": "",
+       "coverage": 91,
+       "n_distinct": 14,
+       "values": [
+        [
+         "Ob",
+         5360
+        ],
+        [
+         "Nc",
+         335
+        ],
+        [
+         "Os",
+         81
+        ],
+        [
+         "Nd",
+         30
+        ],
+        [
+         "Ok",
+         20
+        ],
+        [
+         "Rs",
+         19
+        ],
+        [
+         "Ra",
+         12
+        ],
+        [
+         "Ds",
+         6
+        ]
+       ]
+      },
+      {
+       "id": "year",
+       "label": "year",
+       "kind": "field",
+       "example": "How many Austrian cases per year?",
+       "note": "range 2000–2025",
+       "coverage": 100,
+       "n_distinct": 26,
+       "values": [
+        [
+         "2000–2025",
+         6438
+        ]
+       ]
+      }
+     ]
+    },
+    {
+     "id": "t_keyword_hits",
+     "label": "keyword_hits",
+     "kind": "table",
+     "count": 49,
+     "desc": "Every case's matched IMPORT keywords, per source — joins to the meta tables on id. A matched keyword is not a classified theme.",
+     "children": [
+      {
+       "id": "kw_echr",
+       "label": "ECHR keywords (EN)",
+       "kind": "field",
+       "example": "How many ECHR cases mention child abduction per respondent?",
+       "note": "join keyword_hits→echr_meta",
+       "coverage": 100,
+       "n_distinct": 14,
+       "values": [
+        [
+         "best interests of the child",
+         748
+        ],
+        [
+         "contact rights",
+         554
+        ],
+        [
+         "child abduction",
+         321
+        ],
+        [
+         "visiting rights",
+         318
+        ],
+        [
+         "custody of the child",
+         268
+        ],
+        [
+         "child welfare",
+         227
+        ],
+        [
+         "return of the child",
+         214
+        ],
+        [
+         "contact arrangements",
+         178
+        ]
+       ]
+      },
+      {
+       "id": "kw_swiss",
+       "label": "Swiss keywords (DE)",
+       "kind": "field",
+       "example": "How many Swiss cases mention Obhut per canton?",
+       "note": "join keyword_hits→swiss_meta",
+       "coverage": 100,
+       "n_distinct": 18,
+       "values": [
+        [
+         "Obhut",
+         7518
+        ],
+        [
+         "Besuchsrecht",
+         5161
+        ],
+        [
+         "elterliche Sorge",
+         4140
+        ],
+        [
+         "Kindeswohl",
+         3934
+        ],
+        [
+         "elterlichen Sorge",
+         3709
+        ],
+        [
+         "Kindesschutzmassnahmen",
+         1996
+        ],
+        [
+         "persönlichen Verkehr",
+         1879
+        ],
+        [
+         "Wohl des Kindes",
+         1593
+        ]
+       ]
+      },
+      {
+       "id": "kw_ris",
+       "label": "Austrian keywords (DE)",
+       "kind": "field",
+       "example": "How many Austrian cases mention Obsorge per year?",
+       "note": "join keyword_hits→ris_meta",
+       "coverage": 100,
+       "n_distinct": 24,
+       "values": [
+        [
+         "Obsorge",
+         3214
+        ],
+        [
+         "Kindeswohl",
+         1704
+        ],
+        [
+         "Jugendwohlfahrtsträger",
+         1036
+        ],
+        [
+         "Wohl des Kindes",
+         987
+        ],
+        [
+         "Kinder- und Jugendhilfeträger",
+         747
+        ],
+        [
+         "Rückführung",
+         738
+        ],
+        [
+         "Besuchsrecht",
+         643
+        ],
+        [
+         "Kontaktrecht",
+         629
+        ]
+       ]
+      }
+     ]
+    },
+    {
+     "id": "t_case_themes",
+     "label": "case_themes",
+     "kind": "table",
+     "count": 19448,
+     "desc": "Zero-shot family-law THEMES for ALL sources (portable multilingual classifier, one English spec; approximate/high-recall, not a validated classifier). 19,448 records (echr 1,574, ris 5,841, swiss 12,033).",
+     "children": [
+      {
+       "id": "ct_primary",
+       "label": "primary_theme",
+       "kind": "field",
+       "example": "How many contact_access cases per Swiss canton?",
+       "note": "derived column — distribution not shown · join case_themes→swiss_meta/echr_meta/ris_meta on id (+ source)",
+       "coverage": 100,
+       "values": []
+      },
+      {
+       "id": "ct_flags",
+       "label": "theme flags (is_*)",
+       "kind": "field",
+       "example": "How many abduction_hague cases per respondent state?",
+       "coverage": 100,
+       "note": "8 boolean themes × 3 sources (abduction_hague, adoption, care_removal, alienation, domestic_violence, custody_residence, contact_access, length_procedural) · derived column — distribution not shown",
+       "values": []
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "b3",
+   "label": "Bucket 3 · extracted / calibrated",
+   "bucket": "b3",
+   "desc": "Content aggregates over validated, per-case extracted fields with a calibrated confidence threshold and an abstention audit. Fields combine (AND, each at its own threshold) and can be cut by any ECHR scope dimension.",
+   "example": "How many cases have both an expert opinion ordered and the child heard?",
+   "children": [
+    {
+     "id": "f_applicant_is_father",
+     "label": "applicant_is_father",
+     "kind": "cfield",
+     "desc": "applicant_is_father = TRUE if the person who brought the case to the Court is the father of the child concerned by the dispute, including where several applicants act together and the father is one of them. Confident = TRUE AND calibrated conf ≥ 0.70; low-confidence cells are abstained and surfaced, not dropped.",
+     "example": "How many cases where applicant is father?",
+     "coverage": 100,
+     "note": "threshold 0.70 · F1 0.667 · 120 labels · llama3.2 · derived column — distribution not shown",
+     "values": [],
+     "count": 1574
+    },
+    {
+     "id": "f_child_heard",
+     "label": "child_heard",
+     "kind": "cfield",
+     "desc": "child_heard = TRUE if the child concerned was heard in the domestic proceedings: interviewed, questioned or consulted by a judge, a court-appointed expert, a guardian or a child-welfare authority, in person or through a representative, so that the child's own views reached the decision-maker. Confident = TRUE AND calibrated conf ≥ 0.70; low-confidence cells are abstained and surfaced, not dropped.",
+     "example": "How many cases where child heard?",
+     "coverage": 100,
+     "note": "threshold 0.70 · F1 0.676 · 113 labels · llama3.2 · derived column — distribution not shown",
+     "values": [],
+     "count": 1574
+    },
+    {
+     "id": "f_coercive_measures",
+     "label": "coercive_measures",
+     "kind": "cfield",
+     "desc": "coercive_measures = TRUE if an authority in the domestic proceedings actually imposed or carried out a coercive measure to enforce contact with, or the return of, the child: a fine or penalty payment, detention or arrest, removal of the child by police or a bailiff, or a transfer of custody imposed as a sanction for obstructing contact. Confident = TRUE AND calibrated conf ≥ 0.70; low-confidence cells are abstained and surfaced, not dropped.",
+     "example": "How many cases where coercive measures?",
+     "coverage": 100,
+     "note": "threshold 0.70 · F1 0.615 · 120 labels · llama3.2 · derived column — distribution not shown",
+     "values": [],
+     "count": 1574
+    },
+    {
+     "id": "f_expert_opinion_ordered",
+     "label": "expert_opinion_ordered",
+     "kind": "cfield",
+     "desc": "expert_opinion_ordered = TRUE if a court or child-welfare authority in the domestic proceedings commissioned, ordered or obtained an opinion from a psychological, psychiatric, medical or child-development expert about the child, a parent or the family relationship. Confident = TRUE AND calibrated conf ≥ 0.70; low-confidence cells are abstained and surfaced, not dropped.",
+     "example": "How many cases where expert opinion?",
+     "coverage": 100,
+     "note": "threshold 0.70 · F1 0.803 · 120 labels · llama3.2 · derived column — distribution not shown",
+     "values": [],
+     "count": 1574
+    },
+    {
+     "id": "t_echr_scope",
+     "label": "echr_scope · filters",
+     "kind": "table",
+     "count": 36,
+     "desc": "Every dimension a deployed field can be filtered or grouped by — echr + echr_meta + echr_hudoc (raw HUDOC fields incl. article-level violation / nonviolation), profiled from the data at startup. Conditions combine; a condition the corpus cannot honour is refused, never dropped.",
+     "children": [
+      {
+       "id": "sc_respondent_state",
+       "label": "respondent_state",
+       "kind": "field",
+       "example": "How many applicant is father cases per respondent state?",
+       "coverage": 100,
+       "values": [],
+       "note": "cat · derived column — distribution not shown"
+      },
+      {
+       "id": "sc_articles",
+       "label": "articles",
+       "kind": "field",
+       "example": "How many applicant is father cases per articles?",
+       "coverage": 100,
+       "values": [],
+       "note": "list · ';'-list, matched per atom · derived column — distribution not shown"
+      },
+      {
+       "id": "sc_importance",
+       "label": "importance",
+       "kind": "field",
+       "example": "How many applicant is father cases per importance?",
+       "coverage": 100,
+       "n_distinct": 4,
+       "values": [
+        [
+         "4",
+         1100
+        ],
+        [
+         "3",
+         325
+        ],
+        [
+         "1",
+         110
+        ],
+        [
+         "2",
+         39
+        ]
+       ],
+       "note": "num"
+      },
+      {
+       "id": "sc_genre",
+       "label": "genre",
+       "kind": "field",
+       "example": "How many applicant is father cases per genre?",
+       "coverage": 100,
+       "values": [],
+       "note": "cat · derived column — distribution not shown"
+      },
+      {
+       "id": "sc_outcome",
+       "label": "outcome",
+       "kind": "field",
+       "example": "How many applicant is father cases per outcome?",
+       "coverage": 71,
+       "values": [],
+       "note": "cat · derived column — distribution not shown"
+      },
+      {
+       "id": "sc_outcome_conf",
+       "label": "outcome_conf",
+       "kind": "field",
+       "example": "How many applicant is father cases per outcome conf?",
+       "coverage": 100,
+       "values": [],
+       "note": "num · derived column — distribution not shown"
+      },
+      {
+       "id": "sc_alienation_alleged",
+       "label": "alienation_alleged",
+       "kind": "field",
+       "example": "How many applicant is father cases per alienation alleged?",
+       "coverage": 100,
+       "values": [],
+       "note": "bool · derived column — distribution not shown"
+      },
+      {
+       "id": "sc_alienation_conf",
+       "label": "alienation_conf",
+       "kind": "field",
+       "example": "How many applicant is father cases per alienation conf?",
+       "coverage": 100,
+       "note": "num · derived column — distribution not shown",
+       "values": []
+      },
+      {
+       "id": "sc_alienation_conf_cal",
+       "label": "alienation_conf_cal",
+       "kind": "field",
+       "example": "How many applicant is father cases per alienation conf cal?",
+       "coverage": 100,
+       "values": [],
+       "note": "num · derived column — distribution not shown"
+      },
+      {
+       "id": "sc_primary_theme",
+       "label": "primary_theme",
+       "kind": "field",
+       "example": "How many applicant is father cases per primary theme?",
+       "coverage": 100,
+       "values": [],
+       "note": "cat · derived column — distribution not shown"
+      },
+      {
+       "id": "sc_theme_group",
+       "label": "theme_group",
+       "kind": "field",
+       "example": "How many applicant is father cases per theme group?",
+       "coverage": 100,
+       "values": [],
+       "note": "cat · derived column — distribution not shown"
+      },
+      {
+       "id": "sc_matched_keywords",
+       "label": "matched_keywords",
+       "kind": "field",
+       "example": "How many applicant is father cases per matched keywords?",
+       "coverage": 100,
+       "n_distinct": 14,
+       "values": [
+        [
+         "best interests of the child",
+         748
+        ],
+        [
+         "contact rights",
+         554
+        ],
+        [
+         "child abduction",
+         321
+        ],
+        [
+         "visiting rights",
+         318
+        ],
+        [
+         "custody of the child",
+         268
+        ],
+        [
+         "child welfare",
+         227
+        ],
+        [
+         "return of the child",
+         214
+        ],
+        [
+         "contact arrangements",
+         178
+        ]
+       ],
+       "note": "list · ';'-list, matched per atom"
+      },
+      {
+       "id": "sc_text_length",
+       "label": "text_length",
+       "kind": "field",
+       "example": "How many applicant is father cases per text length?",
+       "coverage": 100,
+       "n_distinct": 1557,
+       "note": "num · range 821–1012033",
+       "values": [
+        [
+         "821–1012033",
+         1574
+        ]
+       ]
+      },
+      {
+       "id": "sc_is_abduction_hague",
+       "label": "is_abduction_hague",
+       "kind": "field",
+       "example": "How many applicant is father cases per is abduction hague?",
+       "coverage": 100,
+       "values": [],
+       "note": "bool · derived column — distribution not shown"
+      },
+      {
+       "id": "sc_is_adoption",
+       "label": "is_adoption",
+       "kind": "field",
+       "example": "How many applicant is father cases per is adoption?",
+       "coverage": 100,
+       "values": [],
+       "note": "bool · derived column — distribution not shown"
+      },
+      {
+       "id": "sc_is_care_removal",
+       "label": "is_care_removal",
+       "kind": "field",
+       "example": "How many applicant is father cases per is care removal?",
+       "coverage": 100,
+       "values": [],
+       "note": "bool · derived column — distribution not shown"
+      },
+      {
+       "id": "sc_is_alienation",
+       "label": "is_alienation",
+       "kind": "field",
+       "example": "How many applicant is father cases per is alienation?",
+       "coverage": 100,
+       "values": [],
+       "note": "bool · derived column — distribution not shown"
+      },
+      {
+       "id": "sc_is_domestic_violence",
+       "label": "is_domestic_violence",
+       "kind": "field",
+       "example": "How many applicant is father cases per is domestic violence?",
+       "coverage": 100,
+       "values": [],
+       "note": "bool · derived column — distribution not shown"
+      },
+      {
+       "id": "sc_is_custody_residence",
+       "label": "is_custody_residence",
+       "kind": "field",
+       "example": "How many applicant is father cases per is custody residence?",
+       "coverage": 100,
+       "values": [],
+       "note": "bool · derived column — distribution not shown"
+      },
+      {
+       "id": "sc_is_contact_access",
+       "label": "is_contact_access",
+       "kind": "field",
+       "example": "How many applicant is father cases per is contact access?",
+       "coverage": 100,
+       "values": [],
+       "note": "bool · derived column — distribution not shown"
+      },
+      {
+       "id": "sc_is_length_procedural",
+       "label": "is_length_procedural",
+       "kind": "field",
+       "example": "How many applicant is father cases per is length procedural?",
+       "coverage": 100,
+       "values": [],
+       "note": "bool · derived column — distribution not shown"
+      },
+      {
+       "id": "sc_year",
+       "label": "year",
+       "kind": "field",
+       "example": "How many applicant is father cases per year?",
+       "coverage": 100,
+       "note": "num · derived column — distribution not shown",
+       "values": []
+      },
+      {
+       "id": "sc_respondent",
+       "label": "respondent",
+       "kind": "field",
+       "example": "How many applicant is father cases per respondent?",
+       "coverage": 100,
+       "n_distinct": 56,
+       "values": [
+        [
+         "RUS",
+         157
+        ],
+        [
+         "POL",
+         145
+        ],
+        [
+         "NOR",
+         116
+        ],
+        [
+         "DEU",
+         105
+        ],
+        [
+         "ROU",
+         98
+        ],
+        [
+         "UKR",
+         78
+        ],
+        [
+         "GBR",
+         64
+        ],
+        [
+         "FIN",
+         57
+        ]
+       ],
+       "note": "cat"
+      },
+      {
+       "id": "sc_formation",
+       "label": "formation",
+       "kind": "field",
+       "example": "How many applicant is father cases per formation?",
+       "coverage": 47,
+       "n_distinct": 3,
+       "values": [
+        [
+         "CHAMBER",
+         574
+        ],
+        [
+         "COMMITTEE",
+         112
+        ],
+        [
+         "GRANDCHAMBER",
+         50
+        ]
+       ],
+       "note": "cat"
+      },
+      {
+       "id": "sc_duration_days",
+       "label": "duration_days",
+       "kind": "field",
+       "example": "How many applicant is father cases per duration days?",
+       "coverage": 28,
+       "n_distinct": 405,
+       "note": "num · range 8–4950",
+       "values": [
+        [
+         "8–4950",
+         448
+        ]
+       ]
+      },
+      {
+       "id": "sc_separate_opinion",
+       "label": "separate_opinion",
+       "kind": "field",
+       "example": "How many applicant is father cases per separate opinion?",
+       "coverage": 100,
+       "n_distinct": 2,
+       "values": [
+        [
+         "no",
+         1343
+        ],
+        [
+         "yes",
+         231
+        ]
+       ],
+       "note": "bool"
+      },
+      {
+       "id": "sc_applicability",
+       "label": "applicability",
+       "kind": "field",
+       "example": "How many applicant is father cases per applicability?",
+       "coverage": 5,
+       "n_distinct": 21,
+       "values": [
+        [
+         "55",
+         40
+        ],
+        [
+         "36",
+         6
+        ],
+        [
+         "12",
+         5
+        ],
+        [
+         "12;55",
+         3
+        ],
+        [
+         "36;55",
+         2
+        ],
+        [
+         "8",
+         2
+        ],
+        [
+         "23",
+         2
+        ],
+        [
+         "8;55",
+         2
+        ]
+       ],
+       "note": "cat"
+      },
+      {
+       "id": "sc_doctype",
+       "label": "doctype",
+       "kind": "field",
+       "example": "How many applicant is father cases per doctype?",
+       "coverage": 100,
+       "n_distinct": 3,
+       "values": [
+        [
+         "HEJUD",
+         736
+        ],
+        [
+         "HEDEC",
+         438
+        ],
+        [
+         "HECOM",
+         400
+        ]
+       ],
+       "note": "cat"
+      },
+      {
+       "id": "sc_doctypebranch",
+       "label": "doctypebranch",
+       "kind": "field",
+       "example": "How many applicant is father cases per doctypebranch?",
+       "coverage": 100,
+       "n_distinct": 6,
+       "values": [
+        [
+         "CHAMBER",
+         574
+        ],
+        [
+         "COMMUNICATEDCASES",
+         400
+        ],
+        [
+         "ADMISSIBILITY",
+         257
+        ],
+        [
+         "ADMISSIBILITYCOM",
+         181
+        ],
+        [
+         "COMMITTEE",
+         112
+        ],
+        [
+         "GRANDCHAMBER",
+         50
+        ]
+       ],
+       "note": "cat"
+      },
+      {
+       "id": "sc_documentcollectionid",
+       "label": "documentcollectionid",
+       "kind": "field",
+       "example": "How many applicant is father cases per documentcollectionid?",
+       "coverage": 100,
+       "n_distinct": 10,
+       "values": [
+        [
+         "CASELAW",
+         1574
+        ],
+        [
+         "ENG",
+         1574
+        ],
+        [
+         "JUDGMENTS",
+         736
+        ],
+        [
+         "CHAMBER",
+         574
+        ],
+        [
+         "DECISIONS",
+         438
+        ],
+        [
+         "COMMUNICATEDCASES",
+         400
+        ],
+        [
+         "ADMISSIBILITY",
+         257
+        ],
+        [
+         "ADMISSIBILITYCOM",
+         181
+        ]
+       ],
+       "note": "list · ';'-list, matched per atom"
+      },
+      {
+       "id": "sc_nonviolation",
+       "label": "nonviolation",
+       "kind": "field",
+       "example": "How many applicant is father cases per nonviolation?",
+       "coverage": 18,
+       "n_distinct": 45,
+       "values": [
+        [
+         "8",
+         214
+        ],
+        [
+         "8-1",
+         145
+        ],
+        [
+         "6",
+         40
+        ],
+        [
+         "3",
+         37
+        ],
+        [
+         "6-1",
+         35
+        ],
+        [
+         "14",
+         27
+        ],
+        [
+         "14+8",
+         19
+        ],
+        [
+         "5",
+         14
+        ]
+       ],
+       "note": "list · ';'-list, matched per atom"
+      },
+      {
+       "id": "sc_originatingbody",
+       "label": "originatingbody",
+       "kind": "field",
+       "example": "How many applicant is father cases per originatingbody?",
+       "coverage": 75,
+       "n_distinct": 11,
+       "values": [
+        [
+         "7",
+         245
+        ],
+        [
+         "6",
+         169
+        ],
+        [
+         "4",
+         148
+        ],
+        [
+         "23",
+         142
+        ],
+        [
+         "5",
+         127
+        ],
+        [
+         "29",
+         80
+        ],
+        [
+         "26",
+         61
+        ],
+        [
+         "25",
+         55
+        ]
+       ],
+       "note": "cat"
+      },
+      {
+       "id": "sc_publishedby",
+       "label": "publishedby",
+       "kind": "field",
+       "example": "How many applicant is father cases per publishedby?",
+       "coverage": 5,
+       "n_distinct": 57,
+       "values": [
+        [
+         "Reports of Judgments and Decisions 2013",
+         4
+        ],
+        [
+         "Reports of Judgments and Decisions 2000-VIII",
+         3
+        ],
+        [
+         "Reports of Judgments and Decisions 2012",
+         3
+        ],
+        [
+         "Reports of Judgments and Decisions 2014 (extracts)",
+         3
+        ],
+        [
+         "Reports of Judgments and Decisions 2015 (extracts)",
+         3
+        ],
+        [
+         "Reports of Judgments and Decisions 2017",
+         2
+        ],
+        [
+         "Reports of Judgments and Decisions 2001-V",
+         2
+        ],
+        [
+         "Reports of Judgments and Decisions 2008",
+         2
+        ]
+       ],
+       "note": "cat"
+      },
+      {
+       "id": "sc_rulesofcourt",
+       "label": "rulesofcourt",
+       "kind": "field",
+       "example": "How many applicant is father cases per rulesofcourt?",
+       "coverage": 4,
+       "n_distinct": 14,
+       "values": [
+        [
+         "17",
+         33
+        ],
+        [
+         "13",
+         10
+        ],
+        [
+         "16",
+         3
+        ],
+        [
+         "27",
+         2
+        ],
+        [
+         "13;17",
+         2
+        ],
+        [
+         "13;16",
+         2
+        ],
+        [
+         "32",
+         1
+        ],
+        [
+         "69;93",
+         1
+        ]
+       ],
+       "note": "cat"
+      },
+      {
+       "id": "sc_typedescription",
+       "label": "typedescription",
+       "kind": "field",
+       "example": "How many applicant is father cases per typedescription?",
+       "coverage": 100,
+       "n_distinct": 8,
+       "values": [
+        [
+         "15",
+         696
+        ],
+        [
+         "8",
+         411
+        ],
+        [
+         "23",
+         400
+        ],
+        [
+         "14",
+         38
+        ],
+        [
+         "9",
+         17
+        ],
+        [
+         "10",
+         10
+        ],
+        [
+         "18",
+         1
+        ],
+        [
+         "12",
+         1
+        ]
+       ],
+       "note": "cat"
+      },
+      {
+       "id": "sc_violation",
+       "label": "violation",
+       "kind": "field",
+       "example": "How many applicant is father cases per violation?",
+       "coverage": 35,
+       "n_distinct": 76,
+       "values": [
+        [
+         "8",
+         399
+        ],
+        [
+         "8-1",
+         299
+        ],
+        [
+         "6",
+         99
+        ],
+        [
+         "6-1",
+         89
+        ],
+        [
+         "3",
+         73
+        ],
+        [
+         "5",
+         48
+        ],
+        [
+         "13",
+         46
+        ],
+        [
+         "14",
+         39
+        ]
+       ],
+       "note": "list · ';'-list, matched per atom"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "b4",
+   "label": "Bucket 4 · wording over time",
+   "bucket": "b4",
+   "desc": "“What changed for <any word or topic> between X and Y?” — not tied to a field or a fixed topic list. Windowed keyness around the term, grounded in KWIC quotes, with a deterministic word-guard on the summary. ECHR / English only, 2000–2025: RIS Rechtssätze are undatable and pre-2010 Swiss coverage is thin, so a German run is refused.",
+   "example": "How has the Court's language on parental alienation changed since 2010?",
+   "children": []
+  },
+  {
+   "id": "refuse",
+   "label": "Refusal · not extracted",
+   "bucket": "refuse",
+   "desc": "Concepts no validated per-case column carries. Answering from retrieval would fabricate a statistic, so the system refuses (or you build + validate a field in the field factory).",
+   "example": "In what proportion of cases did the mother receive custody?",
+   "children": [
+    {
+     "id": "r_custody",
+     "label": "custody outcome",
+     "kind": "gap",
+     "desc": "Who was granted custody — not extracted.",
+     "example": "In what proportion of cases did the mother receive custody?"
+    },
+    {
+     "id": "r_marital",
+     "label": "marital status",
+     "kind": "gap",
+     "desc": "Whether the parents were married — not extracted.",
+     "example": "How many applicants were married?"
+    }
+   ]
+  }
+ ]
+}</script>
+<script>
+"use strict";
+const SVGNS="http://www.w3.org/2000/svg";
+const DATA = JSON.parse(document.getElementById("data").textContent);
+const css = getComputedStyle(document.documentElement);
+const BUCKET_COLOR = {b1:css.getPropertyValue("--b1").trim(),b2:css.getPropertyValue("--b2").trim(),
+  b3:css.getPropertyValue("--b3").trim(),b4:css.getPropertyValue("--b4").trim(),refuse:css.getPropertyValue("--refuse").trim(),root:"#c9d2f0"};
+const BUCKET_LABEL = {b1:"Bucket 1 · grounded",b2:"Bucket 2 · metadata SQL",b3:"Bucket 3 · extracted",b4:"Bucket 4 · diachronic",refuse:"Refusal"};
+
+/* ---------- tree ---------- */
+let UID=0; const NODES=[]; const BYID=new Map();
+function mk(raw,kind,bucket,level,parent){
+  const n={uid:"n"+(UID++),raw,kind,bucket,level,parent,label:raw.label,children:[],
+    expanded:false,x:0,y:0,vx:0,vy:0,fx:null,fy:null,el:null};
+  NODES.push(n); BYID.set(n.uid,n); if(parent) parent.children.push(n); return n;
+}
+function valueKids(node,values){(values||[]).forEach(([val,count])=>{
+  const c=mk({label:String(val),count},"value",node.bucket,node.level+1,node); c.count=count;});}
+const root=mk(DATA.root,"root","root",0,null);
+DATA.buckets.forEach(b=>{
+  const bn=mk(b,"bucket",b.bucket,1,root);
+  (b.children||[]).forEach(ch=>{
+    const cn=mk(ch,ch.kind,b.bucket,2,bn);
+    if(ch.kind==="table")(ch.children||[]).forEach(f=>{const fn=mk(f,"field",b.bucket,3,cn); valueKids(fn,f.values);});
+    else if(ch.kind==="cfield") valueKids(cn,ch.values);
+  });
+});
+root.expanded=true; root.children.forEach(b=>b.expanded=true);
+
+function visNodes(){const o=[];(function w(n){o.push(n); if(n.expanded)n.children.forEach(w);})(root); return o;}
+function visLinks(vis){const s=new Set(vis.map(n=>n.uid)),l=[];
+  vis.forEach(n=>{if(n.parent&&s.has(n.parent.uid))l.push({s:n.parent,t:n});}); return l;}
+
+/* ---------- physics ---------- */
+const RADIUS={0:26,1:20,2:14,3:9.5,4:6.5};
+const REST={1:210,2:162,3:106,4:64};
+const rOf=n=>RADIUS[Math.min(n.level,4)];
+const REP=4600,MAXREP=48,SPRING=0.045,GRAV=0.008,DAMP=0.84,VMAX=26;
+let alpha=1;
+(function seed(n,ang,spread,r){n.children.forEach((c,i)=>{
+  const a=ang-spread/2+spread*(n.children.length===1?0.5:i/(n.children.length-1));
+  c.x=n.x+Math.cos(a)*r; c.y=n.y+Math.sin(a)*r; seed(c,a,Math.max(spread*0.55,0.5),r*0.7);});
+})(root,-Math.PI/2,Math.PI*2,215);
+
+function step(){
+  const vis=visNodes();
+  for(let i=0;i<vis.length;i++){const a=vis[i];
+    for(let j=i+1;j<vis.length;j++){const b=vis[j];
+      let dx=a.x-b.x,dy=a.y-b.y,d2=dx*dx+dy*dy; if(d2<1){d2=1;dx=Math.random()-.5;dy=Math.random()-.5;}
+      const d=Math.sqrt(d2),f=Math.min(REP/d2,MAXREP)*alpha,fx=dx/d*f,fy=dy/d*f;
+      a.vx+=fx;a.vy+=fy;b.vx-=fx;b.vy-=fy;}}
+  visLinks(vis).forEach(({s,t})=>{let dx=t.x-s.x,dy=t.y-s.y,d=Math.hypot(dx,dy)||1;
+    const f=(d-REST[Math.min(t.level,4)])*SPRING*alpha,fx=dx/d*f,fy=dy/d*f;
+    s.vx+=fx;s.vy+=fy;t.vx-=fx;t.vy-=fy;});
+  vis.forEach(n=>{
+    if(n===root){n.x=0;n.y=0;n.vx=0;n.vy=0;return;}
+    if(n.fx!==null){n.x=n.fx;n.y=n.fy;n.vx=0;n.vy=0;return;}
+    n.vx+=(-n.x)*GRAV*alpha; n.vy+=(-n.y)*GRAV*alpha;
+    n.vx*=DAMP; n.vy*=DAMP;
+    n.vx=Math.max(-VMAX,Math.min(VMAX,n.vx)); n.vy=Math.max(-VMAX,Math.min(VMAX,n.vy));
+    n.x+=n.vx; n.y+=n.vy;});
+  alpha*=0.985; if(alpha<0.05)alpha=0.05;
+}
+function reheat(v){alpha=Math.max(alpha,v||0.9);}
+
+/* ---------- DOM render ---------- */
+const stage=document.getElementById("stage"),scene=document.getElementById("scene"),
+  gLinks=document.getElementById("links"),gNodes=document.getElementById("nodes");
+let W=innerWidth,H=innerHeight,view={k:1,tx:W/2,ty:H/2};
+let selected=null,hovered=null,focusBucket=null,structSig="",linkEls=[];
+
+function fsOf(n){return n.level===0?15:n.level===1?13.5:n.level===2?12:n.level>=4?10:11;}
+function buildNodeEl(n){
+  const g=document.createElementNS(SVGNS,"g"); g.dataset.uid=n.uid;
+  const c=document.createElementNS(SVGNS,"circle"); c.setAttribute("r",rOf(n));
+  const isVal=n.kind==="value";
+  c.setAttribute("fill", isVal?"rgba(255,255,255,.10)":BUCKET_COLOR[n.bucket]);
+  if(isVal) c.setAttribute("stroke",BUCKET_COLOR[n.bucket]);
+  const t=document.createElementNS(SVGNS,"text");
+  const fs=fsOf(n); t.setAttribute("x",rOf(n)+5); t.setAttribute("y",fs*0.35);
+  t.setAttribute("font-size",fs); t.setAttribute("font-weight",n.level<=1?700:n.level===2?600:400);
+  t.appendChild(document.createTextNode(n.label));
+  if(isVal&&n.count!=null){const sp=document.createElementNS(SVGNS,"tspan");
+    sp.setAttribute("class","count"); sp.textContent="  "+n.count.toLocaleString(); t.appendChild(sp);}
+  g.appendChild(c); g.appendChild(t); n.el={g,c,t}; return g;
+}
+function rebuild(vis){
+  gNodes.textContent=""; gLinks.textContent=""; linkEls=[];
+  vis.forEach(n=>gNodes.appendChild(buildNodeEl(n)));
+  visLinks(vis).forEach(lk=>{const ln=document.createElementNS(SVGNS,"line");
+    ln.setAttribute("class","link"); gLinks.appendChild(ln); linkEls.push({ln,...lk});});
+}
+function frame(){
+  step();
+  const vis=visNodes();
+  const sig=vis.map(n=>n.uid).join(",");
+  if(sig!==structSig){structSig=sig; rebuild(vis);}
+  scene.setAttribute("transform",`translate(${view.tx},${view.ty}) scale(${view.k})`);
+  vis.forEach(n=>{
+    const g=n.el.g;
+    g.setAttribute("transform",`translate(${n.x.toFixed(2)},${n.y.toFixed(2)})`);
+    const canExp=n.children.length>0, dim=focusBucket&&n.bucket!==focusBucket&&n.bucket!=="root";
+    let cls="node"; if(canExp)cls+=n.expanded?" open":" collapsed";
+    if(n===selected)cls+=" sel"; if(dim)cls+=" dim";
+    if(g.getAttribute("class")!==cls) g.setAttribute("class",cls);
+    // flip label to the outward side so text points away from the graph centre
+    const left=n.level>0 && n.x<0, want=left?"end":"start";
+    if(n.el.side!==want){n.el.side=want; const off=left?-(rOf(n)+6):(rOf(n)+6);
+      n.el.t.setAttribute("text-anchor",want); n.el.t.setAttribute("x",off);}
+  });
+  linkEls.forEach(({ln,s,t})=>{
+    ln.setAttribute("x1",s.x.toFixed(2)); ln.setAttribute("y1",s.y.toFixed(2));
+    ln.setAttribute("x2",t.x.toFixed(2)); ln.setAttribute("y2",t.y.toFixed(2));
+    const hl=hovered&&(hovered===s||hovered===t);
+    ln.setAttribute("class",hl?"link hl":"link");
+  });
+  requestAnimationFrame(frame);
+}
+
+/* ---------- interaction ---------- */
+function toScene(px,py){return {x:(px-view.tx)/view.k,y:(py-view.ty)/view.k};}
+let drag=null,panning=false,panStart=null,moved=false,userMoved=false;
+function fitView(pad=110){
+  const vis=visNodes(); if(vis.length<2)return;
+  let a=1e9,b=1e9,c=-1e9,d=-1e9;
+  vis.forEach(n=>{a=Math.min(a,n.x);c=Math.max(c,n.x);b=Math.min(b,n.y);d=Math.max(d,n.y);});
+  const w=(c-a)||1,h=(d-b)||1;
+  view.k=Math.min(2.4,Math.max(0.3,Math.min((W-2*pad)/w,(H-2*pad-70)/h)));
+  view.tx=W/2-((a+c)/2)*view.k; view.ty=(H/2+22)-((b+d)/2)*view.k;
+}
+stage.addEventListener("pointerdown",e=>{
+  userMoved=true;
+  const g=e.target.closest(".node");
+  if(g){const n=BYID.get(g.dataset.uid); drag={n}; moved=false; n.fx=n.x; n.fy=n.y;
+    stage.setPointerCapture(e.pointerId);}
+  else{panning=true; panStart={x:e.clientX,y:e.clientY,tx:view.tx,ty:view.ty};
+    stage.classList.add("panning"); moved=false; stage.setPointerCapture(e.pointerId);}
+});
+stage.addEventListener("pointermove",e=>{
+  if(drag){const p=toScene(e.clientX,e.clientY); drag.n.fx=p.x; drag.n.fy=p.y; drag.n.x=p.x; drag.n.y=p.y;
+    moved=true; reheat(0.5);}
+  else if(panning){view.tx=panStart.tx+(e.clientX-panStart.x); view.ty=panStart.ty+(e.clientY-panStart.y);
+    if(Math.abs(e.clientX-panStart.x)+Math.abs(e.clientY-panStart.y)>3)moved=true;}
+  const g=e.target.closest(".node"); hovered=g?BYID.get(g.dataset.uid):null;
+});
+stage.addEventListener("pointerup",e=>{
+  if(drag){const n=drag.n; if(!moved){n.fx=null;n.fy=null; nodeClick(n);} drag=null;}
+  if(panning){panning=false; stage.classList.remove("panning");}
+  hideHint();
+});
+stage.addEventListener("wheel",e=>{e.preventDefault(); userMoved=true;
+  const nk=Math.min(3.2,Math.max(0.25,view.k*Math.exp(-e.deltaY*0.0012))),mx=e.clientX,my=e.clientY;
+  view.tx=mx-(mx-view.tx)*(nk/view.k); view.ty=my-(my-view.ty)*(nk/view.k); view.k=nk;
+},{passive:false});
+function nodeClick(n){if(n.children.length){n.expanded=!n.expanded; reheat(0.95);} selected=n; showPanel(n); hideHint();}
+
+/* ---------- panel ---------- */
+const panel=document.getElementById("panel");
+const KIND={root:"entry point",bucket:"answer bucket",source:"source corpus",table:"metadata table",
+  field:"queryable field",cfield:"calibrated content field",topic:"diachronic topic",gap:"not extracted",value:"value"};
+function esc(s){return String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
+function showPanel(n){
+  const col=BUCKET_COLOR[n.bucket],raw=n.raw,s=[];
+  if(raw.count!=null)s.push(["count",raw.count.toLocaleString()]);
+  if(n.kind==="value"&&n.count!=null)s.push(["cases",n.count.toLocaleString()]);
+  if(raw.coverage!=null)s.push(["coverage",raw.coverage+"%"]);
+  if(raw.n_distinct!=null)s.push(["distinct",raw.n_distinct]);
+  const stats=s.length?`<div class="p-stats">${s.map(([k,v])=>`<div class="stat"><div class="v">${v}</div><div class="k">${k}</div></div>`).join("")}</div>`:"";
+  let vals="";const vv=raw.values||[];
+  if(vv.length&&n.kind!=="value"){const max=Math.max(...vv.map(x=>x[1]));
+    vals=`<div class="p-sec">values${raw.n_distinct>vv.length?` · top ${vv.length} of ${raw.n_distinct}`:""}</div><div class="vlist">`+
+      vv.map(([lab,ct])=>`<div class="vrow"><span class="lab">${esc(lab)}</span><span class="bar"><i style="width:${Math.max(4,100*ct/max)}%;background:${col}"></i></span><span class="n">${ct.toLocaleString()}</span></div>`).join("")+`</div>`;}
+  let child="";
+  if(n.children.length&&n.kind!=="field"&&n.kind!=="cfield")
+    child=`<div class="p-note">${n.expanded?"▾ expanded":"▸ collapsed"} — ${n.children.length} ${n.kind==="bucket"?"paths":n.kind==="table"?"fields":"items"} (click the node to ${n.expanded?"collapse":"expand"})</div>`;
+  else if((n.kind==="field"||n.kind==="cfield")&&n.children.length)
+    child=`<div class="p-note">${n.expanded?"▾ values spread on the canvas":"▸ click the node to spread its values on the canvas"}</div>`;
+  const ex=raw.example?`<div class="p-ex"><div class="exlab">try asking</div><div class="exq">"${esc(raw.example)}"</div></div>`:"";
+  const note=raw.note?`<div class="p-note">${esc(raw.note)}</div>`:"";
+  panel.innerHTML=`<div class="p-head">
+      <span class="p-badge" style="color:${col};border-color:${col}66;background:${col}1a">${n.bucket==="root"?"start":(BUCKET_LABEL[n.bucket]||KIND[n.kind])}</span>
+      <div class="p-title">${esc(n.label)}</div><div class="p-kind">${KIND[n.kind]||n.kind}</div></div>
+    <div class="p-body">${raw.desc?`<div class="p-desc">${esc(raw.desc)}</div>`:""}${stats}${vals}${ex}${note}${child}</div>`;
+  panel.classList.remove("hidden");
+}
+panel.addEventListener("pointerdown",e=>e.stopPropagation());
+
+/* ---------- legend / search / buttons ---------- */
+document.querySelectorAll(".legend .row").forEach(row=>row.addEventListener("click",()=>{
+  const b=row.dataset.bucket; focusBucket=focusBucket===b?null:b;
+  document.querySelectorAll(".legend .row").forEach(r=>r.classList.toggle("off",focusBucket&&r.dataset.bucket!==focusBucket));
+}));
+const search=document.getElementById("search");
+search.addEventListener("keydown",e=>{if(e.key!=="Enter")return;
+  const q=search.value.trim().toLowerCase(); if(!q)return;
+  const hit=NODES.find(n=>n.label.toLowerCase().includes(q));
+  if(!hit){search.placeholder="no match — try 'canton', 'outcome'…"; search.value=""; return;}
+  let p=hit.parent; while(p){p.expanded=true; p=p.parent;} if(hit.children.length)hit.expanded=true;
+  reheat(0.95); selected=hit; showPanel(hit);
+  setTimeout(()=>{view.k=1.15; view.tx=W/2-hit.x*view.k; view.ty=H/2-hit.y*view.k;},280);
+});
+let allOpen=false;
+document.getElementById("expandBtn").addEventListener("click",e=>{
+  allOpen=!allOpen; NODES.forEach(n=>{if(n.children.length)n.expanded=allOpen;}); root.expanded=true;
+  e.target.textContent=allOpen?"collapse all":"expand all"; reheat(1); setTimeout(fitView,700);});
+document.getElementById("resetBtn").addEventListener("click",()=>{
+  focusBucket=null; userMoved=false;
+  document.querySelectorAll(".legend .row").forEach(r=>r.classList.remove("off"));
+  reheat(0.8); setTimeout(fitView,500);});
+addEventListener("resize",()=>{W=innerWidth;H=innerHeight;});
+let hintTimer=setTimeout(hideHint,9000);
+function hideHint(){const h=document.getElementById("hint"); if(h)h.style.opacity=0; clearTimeout(hintTimer);}
+
+/* ---------- boot ---------- */
+document.getElementById("sub").textContent=`${DATA.buckets.length} answer buckets · click to explore · generated ${DATA.generated.replace("T"," ")}`;
+const lag=document.createElement("div"); lag.className="lag";
+lag.textContent=DATA.banner||"";
+lag.style.color="#7fdcaa"; lag.style.background="rgba(52,211,153,.08)"; lag.style.borderColor="rgba(52,211,153,.3)";
+document.body.appendChild(lag);
+requestAnimationFrame(frame);
+// settle, then fit the whole graph to the viewport (unless the user grabbed it first)
+setTimeout(()=>{ if(!userMoved) fitView(); },1500);
+// deep link: #open=<field-or-value> expands to that node and opens its panel
+(function(){const m=/open=([^&]+)/.exec(location.hash); if(!m)return;
+  const q=decodeURIComponent(m[1]).toLowerCase();
+  const hit=NODES.find(n=>n.label.toLowerCase()===q)||NODES.find(n=>n.label.toLowerCase().includes(q));
+  if(!hit)return; let p=hit.parent; while(p){p.expanded=true; p=p.parent;}
+  if(hit.children.length)hit.expanded=true; selected=hit; userMoved=true;
+  reheat(1); showPanel(hit);
+  setTimeout(()=>{view.k=1.25; view.tx=W/2-hit.x*view.k-170; view.ty=H/2-hit.y*view.k;},600);
+})();
+</script>
+</body>
+</html>
