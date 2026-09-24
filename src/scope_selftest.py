@@ -219,9 +219,11 @@ def main():
                 # A field crossed with a dimension of its own name is degenerate: the probe
                 # reads "how many <f> cases where <f> is TRUE", and masking the field's name
                 # out of the question -- which is exactly what stops a field being re-resolved
-                # as its own filter -- leaves nothing behind to resolve. `alienation_alleged`
-                # is both a deployed field and a column of echr_themes, so it is the one pair
-                # that collides. Counted and reported, not silently dropped.
+                # as its own filter -- leaves nothing behind to resolve. No deployed field
+                # collides this way today (`alienation_alleged` did, being both a deployed
+                # field and a column of echr_themes, until it was retired from the query
+                # surface on 2026-09-21); the guard stays because the next one will.
+                # Counted and reported, not silently dropped.
                 self_named += 1
                 continue
             where, _, note = _deployed_scope(q, field_terms=other)

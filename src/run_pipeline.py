@@ -17,6 +17,7 @@ checkpointed, so an interrupted run resumes instead of starting over.
 
 import json
 import os
+import runpy
 import sys
 import time
 import traceback
@@ -29,8 +30,9 @@ HERE = Path(__file__).resolve().parent
 REPORT_NOTEBOOKS = [
     "corpus_distributions.ipynb",   # -> reports/corpus_distributions.md + figures/
     "corpus_audit.ipynb",           # -> data/corpus_audit_shortlist.csv
-    "data_summary.ipynb",           # -> src/data_map.html
+    "data_summary.ipynb",           # prints corpus counts (read-only)
     "value_registry.ipynb",         # -> value_registry.json (feeds ask_web suggestions)
+    "build_data_map.py",            # -> src/data_map.html
 ]
 
 
@@ -40,6 +42,14 @@ def run_notebook(name):
     if not path.exists():
         print(f"  !! {name} not found — skipping", flush=True)
         return False
+    if path.suffix == ".py":
+        try:
+            runpy.run_path(str(path), run_name="__main__")
+            return True
+        except Exception:
+            print(f"  !! {name} failed", flush=True)
+            traceback.print_exc()
+            return False
     nb = json.loads(path.read_text())
     ns = {"__name__": "__main__"}
     for n, cell in enumerate(nb["cells"]):
