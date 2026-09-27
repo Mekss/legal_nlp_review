@@ -100,7 +100,8 @@ _POOL = None
 def suggestion_pool():
     """Askable fields: value-registry categoricals that exist in a registered
     duckdb table, plus factory-deployed content fields, plus the one validated
-    alienation column. Built once; /suggest samples from it."""
+    alienation column. Deployed fields with no confident cell are left out.
+    Built once; /suggest samples from it."""
     global _POOL
     if _POOL is not None:
         return _POOL
@@ -133,6 +134,15 @@ def suggestion_pool():
                 pool.append({"field": f, "source": label,
                              "values": [k for k in v["values"] if k != "(other)"][:6]})
     for fname, meta in globals().get("DEPLOYED_FIELDS", {}).items():
+        # a field with no cell above its threshold can only abstain -- don't offer it
+        cond = f"{fname} IS NOT NULL" if meta.get("kind") == "numeric" else fname
+        try:
+            n_conf = con.execute(f"SELECT COUNT(*) FROM field_{fname} WHERE {cond} "
+                                 f"AND conf_cal >= {meta['threshold']}").fetchone()[0]
+        except Exception:
+            n_conf = 0
+        if not n_conf:
+            continue
         pool.append({"field": fname.replace("_", " "), "source": "ECHR content",
                      "values": meta.get("lexicon", [])[:4],
                      "fill": f"How many cases involve {fname.replace('_', ' ')}?"})
