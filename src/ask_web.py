@@ -11,7 +11,9 @@ Open:              http://127.0.0.1:8765
 No third-party web framework -- stdlib http.server only.
 """
 
+import base64
 import contextlib
+import hmac
 import io
 import json
 import os
@@ -50,6 +52,10 @@ SKIP_FIELDS = {"jurisdiction", "lang", "languageisocode", "matched_keywords",
 BOOT_MARKERS = ["RAG_NB   = Path", "_swiss = _json.loads", "def _h_diachronic",
                 "def ask_anything"]   # was "def _h_alienation" -- that branch is retired,
                                       # and a marker naming it stops finding the cell
+
+# "user:password" for HTTP Basic Auth; unset = no auth (fine on 127.0.0.1 only).
+# serve_public.sh refuses to open the tunnel without it.
+AUTH = os.environ.get("ASK_WEB_AUTH", "")
 
 _LOCK = threading.Lock()  # ask_anything + duckdb con are not thread-safe
 
@@ -177,11 +183,25 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(data)
 
+    def _authorized(self):
+        if not AUTH:
+            return True
+        expected = "Basic " + base64.b64encode(AUTH.encode()).decode()
+        if hmac.compare_digest(self.headers.get("Authorization", ""), expected):
+            return True
+        self.send_response(401)
+        self.send_header("WWW-Authenticate", 'Basic realm="ask", charset="UTF-8"')
+        self.send_header("Content-Length", "0")
+        self.end_headers()
+        return False
+
     def _body(self):
         n = int(self.headers.get("Content-Length", 0))
         return json.loads(self.rfile.read(n) or b"{}")
 
     def do_GET(self):
+        if not self._authorized():
+            return
         if self.path in ("/", "/index.html"):
             self._send(200, PAGE.read_bytes(), "text/html; charset=utf-8")
         elif self.path == "/history":
@@ -202,6 +222,8 @@ class Handler(BaseHTTPRequestHandler):
             self._send(404, {"error": "not found"})
 
     def do_POST(self):
+        if not self._authorized():
+            return
         if self.path == "/ask":
             question = (self._body().get("question") or "").strip()
             if not question:
@@ -229,7 +251,8 @@ def main():
     s = stats()
     print(f"ready: {s['chunks']} chunks | {s['table_rows']} table rows | "
           f"fields: {', '.join(s['deployed_fields']) or 'none'}")
-    print(f"serving on http://{HOST}:{PORT}  (history -> {HIST_PATH})")
+    print(f"serving on http://{HOST}:{PORT}  (history -> {HIST_PATH})"
+          f"{'  [password required]' if AUTH else ''}")
     ThreadingHTTPServer.allow_reuse_address = True
     ThreadingHTTPServer((HOST, PORT), Handler).serve_forever()
 
